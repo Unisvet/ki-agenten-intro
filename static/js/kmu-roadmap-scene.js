@@ -174,7 +174,10 @@ function buildDrones() {
     const dronePositions = [
         new THREE.Vector3(-4.0, 1.9, -1.0),
         new THREE.Vector3(0.5, 2.1, 0.5),
-        new THREE.Vector3(4.0, 0.9, -1.0)
+        new THREE.Vector3(4.0, 0.9, -1.0),
+        new THREE.Vector3(-2.0, -1.9, 1.0),
+        new THREE.Vector3(2.0, -1.8, 1.0),
+        new THREE.Vector3(-6.0, 0.5, 0.0)
     ];
 
     dronePositions.forEach((pos, idx) => {
@@ -188,7 +191,7 @@ function buildDrones() {
         droneGroup.add(ringMesh);
 
         droneGroup.position.copy(pos);
-        droneGroup.userData = { isDrone: true, droneIndex: idx, baseScale: 1 };
+        droneGroup.userData = { isDrone: true, droneIndex: idx, baseScale: 1, baseY: pos.y };
 
         scene.add(droneGroup);
         roadmapDrones.push(droneGroup);
@@ -263,7 +266,7 @@ function animate(time) {
     // Animate and float 3D drones
     roadmapDrones.forEach((drone, idx) => {
         // Drone bobbing motion
-        const basePos = idx === 0 ? 1.9 : idx === 1 ? 2.1 : 0.9;
+        const basePos = drone.userData.baseY !== undefined ? drone.userData.baseY : 1.0;
         drone.position.y = basePos + Math.sin(seconds * 2.8 + idx * 2.0) * 0.08;
         
         // Spin the drone rotor ring

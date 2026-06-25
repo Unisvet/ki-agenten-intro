@@ -1,0 +1,162 @@
+{
+  "title": "KI-Agenten im Mittelstand - Experten-Quiz",
+  "description": "Ein anspruchsvolles Quiz basierend auf den bereitgestellten Quellen zu KI-Agenten, Plattform-Kategorien, Datensouveränität und rechtlichen Rahmenbedingungen für KMU.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Welche drei primären Plattform-Kategorien werden für die Auswahl von KI-Agenten-Plattformen in der Praxis unterschieden?",
+      "type": "single-choice",
+      "options": [
+        "A) Closed-Source-Modelle, Open-Source-Frameworks, Hybrid-Systeme",
+        "B) Low-Code/No-Code-Tools, Enterprise-Plattformen, Entwickler-Frameworks",
+        "C) Chatbots, RPA-Bots, Autonome Agenten",
+        "D) Single-Agent-Systeme, Multi-Agenten-Systeme, Unified-Architekturen"
+      ],
+      "correct_answer": "B",
+      "explanation": "Laut den Quellen wird bei der Auswahl moderner Plattformen zwischen den drei Kategorien Low-Code/No-Code-Tools, Enterprise-Plattformen und Entwickler-Frameworks unterschieden."
+    },
+    {
+      "id": 2,
+      "question": "Welcher offene Standard löst das sogenannte 'N x M'-Integrationsproblem bei der Anbindung von Werkzeugen an KI-Modelle?",
+      "type": "single-choice",
+      "options": [
+        "A) Agentic Interoperability Protocol (AIP)",
+        "B) Model Context Protocol (MCP)",
+        "C) REST-API Unified Connector (RUC)",
+        "D) Model Routing Control (MRC)"
+      ],
+      "correct_answer": "B",
+      "explanation": "Das von Anthropic eingeführte und an die Linux Foundation übergebene Model Context Protocol (MCP) standardisiert die Schnittstelle zwischen Modellen und Werkzeugen, um das 'N x M'-Integrationsproblem zu lösen."
+    },
+    {
+      "id": 3,
+      "question": "Welches Einsparpotenzial bei den Token-Kosten lässt sich in KMU durch den Einsatz von 'Model Routing' in einem Multi-Agenten-System typischerweise erzielen?",
+      "type": "single-choice",
+      "options": [
+        "A) 10 % bis 20 %",
+        "B) 30 % bis 70 %",
+        "C) Exakt 50 %",
+        "D) Es entstehen keine Einsparungen, aber die Latenz sinkt."
+      ],
+      "correct_answer": "B",
+      "explanation": "Durch Model Routing werden einfache Aufgaben an kleine, kostengünstige Modelle delegiert, was die Token-Kosten in der Praxis um 30 % bis 70 % senkt."
+    },
+    {
+      "id": 4,
+      "question": "Welche Lizenzierung der Google Gemma 4-Modellfamilie bietet KMU einen strategischen Vorteil gegenüber Konkurrenten wie Llama 4?",
+      "type": "single-choice",
+      "options": [
+        "A) Eine restriktive, kostenpflichtige Enterprise-Lizenz",
+        "B) Die uneingeschränkte, kommerziell nutzbare Apache 2.0-Lizenz",
+        "C) Die Creative Commons Attribution-NonCommercial-Lizenz",
+        "D) Die MIT-Lizenz, die jedoch Bildverarbeitung in der EU ausschließt"
+      ],
+      "correct_answer": "B",
+      "explanation": "Googles Gemma 4 steht unter der uneingeschränkten, kommerziell nutzbaren Apache 2.0-Lizenz, was KMU freie Vervielfältigung, Modifikation und kommerzielle Verwertung ohne finanzielle Hürden erlaubt."
+    },
+    {
+      "id": 5,
+      "question": "Ab welchem Stichtag treten die vollständigen Pflichten für Hochrisiko-KI-Systeme nach dem EU AI Act voraussichtlich in Kraft?",
+      "type": "single-choice",
+      "options": [
+        "A) 2. August 2025",
+        "B) 1. Januar 2026",
+        "C) 2. August 2026",
+        "D) 31. Dezember 2027"
+      ],
+      "correct_answer": "C",
+      "explanation": "Der 2. August 2026 ist der nächste große Stichtag des EU AI Act, ab dem die vollständigen Pflichten für Hochrisiko-KI-Systeme (Anhang III) in Kraft treten."
+    },
+    {
+      "id": 6,
+      "question": "Wann gilt ein KI-Agent nach dem EU AI Act als Hochrisiko-System?",
+      "type": "single-choice",
+      "options": [
+        "A) Wenn er in der Cloud betrieben wird statt lokal.",
+        "B) Wenn er in sensiblen Bereichen wie Beschäftigung/HR (z. B. Bewerbervorauswahl) eingesetzt wird.",
+        "C) Wenn seine Token-Kosten ein bestimmtes monatliches Budget überschreiten.",
+        "D) Wenn er mehr als 10 Subagenten autonom koordiniert."
+      ],
+      "correct_answer": "B",
+      "explanation": "Systeme, die in sensiblen Bereichen wie Beschäftigung, HR-Management, kritischer Infrastruktur oder biometrischer Identifizierung eingesetzt werden, sind als Hochrisiko klassifiziert."
+    },
+    {
+      "id": 7,
+      "question": "Welcher fundamentale Rollenwechsel beschreibt das Prinzip des 'Agentic Engineering'?",
+      "type": "single-choice",
+      "options": [
+        "A) Der Wechsel von No-Code-Tools zu reinem Python-Code.",
+        "B) Der Übergang von 'Human-on-the-Loop' zu vollständig unüberwachter KI.",
+        "C) Der Wechsel von Mikro-Anweisungen (Diktat wie bei einem Lehrling) zu strategischen Zielvorgaben (Delegation wie bei einem Gesellen).",
+        "D) Der Wechsel von lokalen Open-Weights-Modellen zu US-amerikanischen Cloud-Modellen."
+      ],
+      "correct_answer": "C",
+      "explanation": "Agentic Engineering beschreibt den Übergang, bei dem KI-Systeme nicht mehr jeden Einzelschritt diktiert bekommen (Lehrling), sondern strategische Ziele vorgegeben bekommen und selbstständig Ergebnisse liefern (Geselle)."
+    },
+    {
+      "id": 8,
+      "question": "Welche drei Stufen menschlicher Aufsicht werden im Risikomanagement autonomer Systeme ('Autonomie-Konsortium') unterschieden?",
+      "type": "single-choice",
+      "options": [
+        "A) Single-Agent, Multi-Agent, Full-Autonomy",
+        "B) Human-in-the-Loop (HITL), Human-on-the-Loop (HOTL), Human-in-Command (HIC)",
+        "C) Model Armor, Agent Gateway, Agent Registry",
+        "D) Low-Risk, Medium-Risk, High-Risk"
+      ],
+      "correct_answer": "B",
+      "explanation": "Zur Wahrung menschlicher Kontrolle werden Human-in-the-Loop (kritische Aktionen freigeben), Human-on-the-Loop (überwachen und eingreifen) und Human-in-Command (Ziele setzen und Ausführung stichprobenartig kontrollieren) unterschieden."
+    },
+    {
+      "id": 9,
+      "question": "Was versteht man unter dem Sicherheitsrisiko der 'Dynamic Capability Injection' bei MCP-Servern?",
+      "type": "single-choice",
+      "options": [
+        "A) Ein Angreifer injiziert Schadcode direkt in die Gewichte eines lokalen Sprachmodells.",
+        "B) Ein MCP-Server ändert dynamisch seine angebotenen Werkzeuge (z. B. Hinzufügen einer Bezahlfunktion), wodurch ein harmloser Agent unerwartet risikoreiche Fähigkeiten erbt.",
+        "C) Die unabsichtliche Überschwemmung des Kontextfensters durch zu viele Werkzeugdefinitionen.",
+        "D) Die unautorisierte Weiterleitung von Benutzer-Credentials über einen verschlüsselten Seitenkanal."
+      ],
+      "correct_answer": "B",
+      "explanation": "Dynamic Capability Injection beschreibt das Risiko, dass MCP-Server zur Laufzeit ihre angebotenen Werkzeuge ändern, ohne den Client explizit zu warnen, wodurch Agenten ungewollte und potenziell gefährliche Fähigkeiten erben."
+    },
+    {
+      "id": 10,
+      "question": "Was ist OpenClaw (ursprünglich Clawdbot)?",
+      "type": "single-choice",
+      "options": [
+        "A) Ein proprietäres Google Cloud-Tool zur Überwachung von Enterprise-Agenten.",
+        "B) Eine Open-Source-Software für persönliche KI-Agenten, die über Messenger wie WhatsApp, Telegram oder Signal gesteuert werden kann.",
+        "C) Ein spezieller Benchmark zur Messung der Reasoning-Fähigkeit von Sprachmodellen.",
+        "D) Ein alternatives Protokoll, das das Model Context Protocol ablösen soll."
+      ],
+      "correct_answer": "B",
+      "explanation": "Laut Wikipedia ist OpenClaw eine Open-Source-Software für künstliche Intelligenz, die als Grundlage für persönliche KI-Agenten dient und über Messenger wie WhatsApp, Telegram oder Signal gesteuert werden kann."
+    },
+    {
+      "id": 11,
+      "question": "Wie wird das Problem bezeichnet, bei dem ein privilegiertes System (wie ein MCP-Server) von einem weniger privilegierten Benutzer über eine Prompt-Injection dazu gebracht wird, seine Rechte zu missbrauchen?",
+      "type": "single-choice",
+      "options": [
+        "A) Privilege Escalation",
+        "B) Confused Deputy Problem",
+        "C) Tool Shadowing",
+        "D) Context Bloat"
+      ],
+      "correct_answer": "B",
+      "explanation": "Das 'Confused Deputy'-Problem (verwirrter Stellvertreter) beschreibt ein Szenario, in dem der privilegierte MCP-Server Befehle eines manipulierten KI-Modells ausführt, ohne zu prüfen, ob der eigentliche Benutzer diese Rechte besitzt."
+    },
+    {
+      "id": 12,
+      "question": "Welche Programmiersprachen werden vom Google Agent Development Kit (ADK) nativ unterstützt?",
+      "type": "single-choice",
+      "options": [
+        "A) Nur Python",
+        "B) Python und Java",
+        "C) Python, TypeScript und Rust",
+        "D) Java und C++"
+      ],
+      "correct_answer": "B",
+      "explanation": "Das ADK (Agent Development Kit) unterstützt mehrere Programmiersprachen nativ, insbesondere Python 3.11+ und Java 17+."
+    }
+  ]
+}

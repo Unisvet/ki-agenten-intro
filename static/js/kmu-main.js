@@ -253,7 +253,7 @@ function closeSidebar() {
 let droneQuestions = [];
 let activeDroneIdx = null;
 let selectedQuizOptionIdx = null;
-let droneSolvedStatus = [false, false, false];
+let droneSolvedStatus = Array(12).fill(false);
 
 async function initDroneQuiz() {
     try {
