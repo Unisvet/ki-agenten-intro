@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME 3D-Roadmap & Strategie | KI-Agenten im Mittelstand</title>
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Fullscreen layout container -->
+    <div class="fullscreen-layout">
+        
+        <!-- Three.js Canvas -->
+        <canvas id="roadmap-canvas"></canvas>
+
+        <!-- HTML Label Overlay container (populated dynamically by JS) -->
+        <div id="roadmap-label-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+
+        <!-- Back Button to Landing Page -->
+        <div class="roadmap-back-btn">
+            <a href="/static/index.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Zurück zur Einführung</a>
+        </div>
+
+        <!-- Sidebar Details Panel -->
+        <div class="roadmap-sidebar glass-panel" id="roadmap-sidebar">
+            <!-- Default Placeholder view -->
+            <div id="sidebar-placeholder" class="panel-placeholder">
+                <i class="fa-solid fa-map-location-dot placeholder-icon pulse-icon"></i>
+                <h3>Interaktiver Fahrplan</h3>
+                <p>Klicken Sie auf einen leuchtenden Knoten auf dem 3D-Pfad, um die Details zu Plattformen, lokaler KI, Einführungsphasen und rechtlichen Richtlinien anzuzeigen.</p>
+                <div class="quick-selectors" style="max-width: 100%;">
+                    <button class="btn btn-outline btn-sm" onclick="selectRoadmapTopic(0)">1. Plattformen-Kategorien</button>
+                    <button class="btn btn-outline btn-sm" onclick="selectRoadmapTopic(1)">2. Lokale KI & Gemma 4</button>
+                    <button class="btn btn-outline btn-sm" onclick="selectRoadmapTopic(2)">3. Die 5-Phasen-Roadmap</button>
+                    <button class="btn btn-outline btn-sm" onclick="selectRoadmapTopic(3)">4. Governance & EU AI Act</button>
+                    <button class="btn btn-outline btn-sm" onclick="selectRoadmapTopic(4)">5. Kritische Fallstricke</button>
+                </div>
+            </div>
+
+            <!-- Active content view -->
+            <div id="sidebar-active-content" class="panel-content hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span class="topic-num" id="active-roadmap-num">Knoten 1</span>
+                    <button class="btn-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <h3 id="active-roadmap-title">Themenbereich</h3>
+                <div class="topic-desc" id="active-roadmap-desc" style="max-height: 50vh; overflow-y: auto; padding-right: 6px;">
+                    Inhalt...
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="closeSidebar()" style="margin-top: 20px; width: 100%;">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Zurück zum Fahrplan
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="/static/js/kmu-main.js"></script>
+    <script src="/static/js/kmu-roadmap-scene.js"></script>
+</body>
+</html>

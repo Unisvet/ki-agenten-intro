@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einblicke in die Welt der KI-Agenten | Digitaltag 2026</title>
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+        <div class="header-logo">
+            <span class="logo-mdz">Mittelstand-Digital Zentrum <strong>Spreeland</strong></span>
+        </div>
+        <div class="header-tag">
+            <span class="badge"><i class="fa-solid fa-calendar-day"></i> Digitaltag 2026</span>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title animate-fade-in">Einblicke in die Welt der <span class="text-highlight">KI-Agenten</span></h1>
+            <p class="hero-subtitle animate-fade-in delay-1">Die Evolution der künstlichen Intelligenz: Vom statischen Sprachmodell (LLM) zum autonomen Problemlöser.</p>
+            <div class="hero-meta animate-fade-in delay-2">
+                <span><i class="fa-solid fa-laptop-code"></i> Live-Präsentation & Workshop</span>
+                <span class="separator">|</span>
+                <span><i class="fa-solid fa-clock"></i> 26. Juni 2026, 10:00 - 11:30 Uhr</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="main-content container">
+        
+        <!-- Story section -->
+        <section class="intro-card glass-panel">
+            <h2>Vom Modell zum Agenten: Die Evolution</h2>
+            <p>
+                Klassische Large Language Models (LLMs) sind wie ein <strong>Gehirn ohne Hände</strong>. Sie können Texte generieren, 
+                Antworten formulieren und Ratschläge geben, aber sie können keine Aktionen in der echten Welt ausführen. 
+                <strong>KI-Agenten</strong> verändern das grundlegend. Sie kombinieren die Intelligenz von Sprachmodellen mit 
+                <strong>Werkzeugen (Tools)</strong> und einer <strong>autonomen Logik (Orchestrierung)</strong>, um komplexe Ziele eigenständig zu verfolgen.
+            </p>
+        </section>
+
+        <!-- KMU Menu Section -->
+        <section class="kmu-menu-section glass-panel">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-map-location-dot text-highlight"></i> KI-Agenten für KMU: Strategie & Roadmap</h2>
+                <p>Erkunden Sie unsere strategische Roadmap und Empfehlungen für den Mittelstand. Wechseln Sie direkt zur interaktiven 3D-Roadmap oder wählen Sie ein Thema aus:</p>
+            </div>
+            <div class="kmu-menu-grid">
+                <a href="/static/kmu.html?topic=0" class="kmu-menu-card">
+                    <div class="card-icon-container"><i class="fa-solid fa-layer-group card-icon"></i></div>
+                    <h3>Plattformen-Kategorien</h3>
+                    <p>Low-Code/No-Code (Voiceflow, Lindy.ai), Enterprise (Gemini, Salesforce, Microsoft) und Entwickler-Frameworks (CrewAI, LangGraph).</p>
+                </a>
+                <a href="/static/kmu.html?topic=1" class="kmu-menu-card">
+                    <div class="card-icon-container"><i class="fa-solid fa-shield-halved card-icon"></i></div>
+                    <h3>Lokale KI & Gemma 4</h3>
+                    <p>Datensouveränität durch Open-Weights-Modelle wie Gemma 4 lokal über Ollama betreiben.</p>
+                </a>
+                <a href="/static/kmu.html?topic=2" class="kmu-menu-card">
+                    <div class="card-icon-container"><i class="fa-solid fa-road card-icon"></i></div>
+                    <h3>Die 5-Phasen-Roadmap</h3>
+                    <p>In 5 Schritten vom „digitalen Praktikanten“ zum produktiven KI-Agenten im Unternehmen.</p>
+                </a>
+                <a href="/static/kmu.html?topic=3" class="kmu-menu-card">
+                    <div class="card-icon-container"><i class="fa-solid fa-scale-balanced card-icon"></i></div>
+                    <h3>Governance & EU AI Act</h3>
+                    <p>Rechtliche Leitplanken ab August 2026 (EU AI Act), DSGVO, HITL und Model Routing.</p>
+                </a>
+            </div>
+            <div class="kmu-menu-footer">
+                <a href="/static/kmu.html" class="btn btn-primary btn-lg"><i class="fa-solid fa-compass"></i> Gesamte 3D-Roadmap (Vollbild) öffnen</a>
+            </div>
+        </section>
+
+        <!-- 3D Interactive Presentation Section -->
+        <section class="presentation-section">
+            <div class="section-header">
+                <h2>Die 4 Säulen eines KI-Agenten</h2>
+                <p>Navigieren Sie durch die 3D-Welt. Klicken Sie auf die rotierenden 3D-Objekte, um die Kernbereiche zu erkunden.</p>
+            </div>
+            
+            <div class="presentation-grid">
+                <!-- 3D Canvas Container -->
+                <div class="canvas-container glass-panel">
+                    <canvas id="three-canvas"></canvas>
+                    <div class="canvas-overlay-instruction">
+                        <i class="fa-solid fa-hand-pointer pulse-icon"></i> Klicken Sie auf ein 3D-Objekt zum Interagieren
+                    </div>
+                </div>
+
+                <!-- Detail Panel -->
+                <div class="detail-panel glass-panel" id="topic-detail-panel">
+                    <div class="panel-placeholder" id="panel-placeholder-content">
+                        <i class="fa-solid fa-cubes-stacked placeholder-icon"></i>
+                        <h3>Wählen Sie eine Säule aus</h3>
+                        <p>Klicken Sie auf eines der schwebenden 3D-Objekte auf der linken Seite, um Details zu Gehirn, Werkzeugen, Orchestrierung und Bereitstellung anzuzeigen.</p>
+                        <div class="quick-selectors">
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(0)">1. Modell (Gehirn)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(1)">2. Werkzeuge (Hände)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(2)">3. Orchestrierung (Nervensystem)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(3)">4. Bereitstellung (Praxis)</button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-content hidden" id="panel-active-content">
+                        <span class="topic-num" id="active-topic-num">Säule 1</span>
+                        <h3 id="active-topic-title">Themenbereich</h3>
+                        <div class="topic-desc" id="active-topic-desc">
+                            Inhalt...
+                        </div>
+                        <div class="topic-bullet-points" id="active-topic-bullets">
+                            <!-- Bullet points inserted dynamically -->
+                        </div>
+                        <button class="btn btn-outline btn-sm" id="btn-back-to-overview" style="margin-top: 24px; width: 100%;">
+                            <i class="fa-solid fa-arrow-left"></i> Zurück zur Übersicht
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Agent ReAct Simulator -->
+        <section class="simulator-section glass-panel">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-circle-play text-highlight"></i> Interaktiver ReAct Agenten-Simulator</h2>
+                <p>Beobachten Sie, wie ein KI-Agent eine Aufgabe durch den Kreislauf von **Denken (Reasoning)**, **Handeln (Action)** und **Beobachten (Observation)** löst.</p>
+            </div>
+            
+            <div class="simulator-control">
+                <label for="simulation-task">Wählen Sie ein Szenario für den Agenten:</label>
+                <div class="input-group">
+                    <select id="simulation-task" class="form-control">
+                        <option value="cottbus">Reiseplanung nach Cottbus: Wetter & Zugverbindung prüfen</option>
+                        <option value="budget">Firmen-Budget berechnen: Daten aus Datenbank abfragen und summieren</option>
+                        <option value="email">Kundensupport: E-Mail-Eingang analysieren und Entwurf erstellen</option>
+                    </select>
+                    <button class="btn btn-primary" id="btn-start-simulation">Simulation starten</button>
+                </div>
+            </div>
+
+            <!-- Terminal output window -->
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-dot close"></span>
+                        <span class="btn-dot minimize"></span>
+                        <span class="btn-dot expand"></span>
+                    </div>
+                    <span class="terminal-title"><i class="fa-solid fa-terminal"></i> Agenten-Protokoll (ReAct-Schleife)</span>
+                </div>
+                <div class="terminal-body" id="simulation-terminal">
+                    <div class="terminal-line system-text">> Bereit für die Ausführung. Wählen Sie oben ein Szenario und klicken Sie auf "Simulation starten".</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google Colab & Workshop Notebook Integration -->
+        <section class="colab-section glass-panel">
+            <div class="colab-layout">
+                <div class="colab-info">
+                    <h2><i class="fa-solid fa-book-open"></i> Google Colab Workshop-Bereich</h2>
+                    <p>
+                        Für den praktischen Teil unseres Seminars stellen wir ein interaktives Jupyter Notebook bereit. 
+                        Sie können das Notebook mit einem Klick in Google Colab öffnen und dort live den Python-Code für Ihren ersten eigenen KI-Agenten ausführen.
+                    </p>
+                    <div class="colab-buttons">
+                        <a href="https://colab.research.google.com/github/Unisvet/ki-agenten-intro/blob/main/notebooks/agent_demo.ipynb" target="_blank" class="btn btn-colab">
+                            <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+                        </a>
+                        <a href="https://github.com/Unisvet/ki-agenten-intro" target="_blank" class="btn btn-outline">
+                            <i class="fa-brands fa-github"></i> Zum GitHub Repo
+                        </a>
+                    </div>
+                    <div class="note-box">
+                        <p><strong>Hinweis:</strong> Google Colab ermöglicht es Ihnen, den Code direkt im Browser auszuführen – ohne lokale Installation und vollkommen kostenlos.</p>
+                    </div>
+                </div>
+
+                <!-- Drag and drop previewer -->
+                <div class="colab-uploader">
+                    <h3>Lokaler Notebook-Inspektor</h3>
+                    <p>Ziehen Sie Ihr `.ipynb` Notebook in den Bereich, um die Struktur und den Code direkt hier zu prüfen.</p>
+                    
+                    <div class="drop-zone" id="ipynb-drop-zone">
+                        <i class="fa-solid fa-file-arrow-up drop-icon"></i>
+                        <span class="drop-text">Notebook-Datei (.ipynb) hierher ziehen oder klicken</span>
+                        <input type="file" id="ipynb-file-input" accept=".ipynb" style="display: none;">
+                    </div>
+
+                    <div class="upload-preview hidden" id="upload-preview-container">
+                        <div class="preview-header">
+                            <span class="file-name" id="preview-file-name">filename.ipynb</span>
+                            <button class="btn-close" id="btn-clear-upload"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="preview-stats">
+                            <span id="preview-stat-cells">0 Zellen</span> | 
+                            <span id="preview-stat-code">0 Code-Zellen</span>
+                        </div>
+                        <div class="preview-cells" id="preview-cells-container">
+                            <!-- Cells rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 Mittelstand-Digital Zentrum Spreeland. Alle Rechte vorbehalten.</p>
+            <p class="footer-links">
+                <a href="https://www.digitalzentrum-spreeland.de/Veranstaltungen/event/589" target="_blank">Veranstaltungsseite</a>
+                <span class="dot">&middot;</span>
+                <a href="https://github.com/Unisvet/ki-agenten-intro" target="_blank">GitHub Repository</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Three.js shaders or additional geometries if needed -->
+    <!-- Custom Scripts -->
+    <script src="/static/js/three-scene.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
