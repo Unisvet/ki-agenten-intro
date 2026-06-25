@@ -283,7 +283,7 @@ let droneSolvedStatus = [false, false, false];
 
 async function initDroneQuiz() {
     try {
-        const response = await fetch('/static/quiz/questions.json');
+        const response = await fetch('quiz/questions.json');
         droneQuestions = await response.json();
     } catch (e) {
         console.warn("Could not fetch quiz questions, using hardcoded fallback.");

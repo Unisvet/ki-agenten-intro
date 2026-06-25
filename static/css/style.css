@@ -48,7 +48,7 @@
 }
 
 body {
-    background: url('/static/assets/blue_sky_clouds.png') no-repeat center center fixed;
+    background: url('../assets/blue_sky_clouds.png') no-repeat center center fixed;
     background-size: cover;
     color: var(--color-text-main);
     font-family: var(--font-body);
@@ -899,7 +899,7 @@ code {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    background: url('/static/assets/future_workplace.png') no-repeat center center;
+    background: url('../assets/future_workplace.png') no-repeat center center;
     background-size: cover;
 }
 
@@ -1228,7 +1228,7 @@ code {
 
 /* Background image overrides for kmu.html */
 .kmu-page-body {
-    background: url('/static/assets/future_workplace.png') no-repeat center center fixed !important;
+    background: url('../assets/future_workplace.png') no-repeat center center fixed !important;
     background-size: cover !important;
 }
 
@@ -1238,7 +1238,7 @@ code {
 
 .interactive-pillars-wrapper {
     position: relative;
-    background: url('/static/assets/agent_schematic.png') no-repeat center center !important;
+    background: url('../assets/agent_schematic.png') no-repeat center center !important;
     background-size: cover !important;
     border: 1px solid var(--color-border) !important;
     box-shadow: var(--shadow-premium) !important;

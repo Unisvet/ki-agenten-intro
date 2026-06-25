@@ -365,7 +365,7 @@ let selectedOptionIndex = null;
 
 async function initQuiz() {
     try {
-        const response = await fetch('/static/quiz/questions.json');
+        const response = await fetch('quiz/questions.json');
         quizQuestions = await response.json();
     } catch (e) {
         console.warn("Could not fetch quiz questions, using hardcoded fallback.");
