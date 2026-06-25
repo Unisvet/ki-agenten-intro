@@ -244,28 +244,17 @@
                     </div>
                 </div>
 
-                <!-- Drag and drop previewer -->
+                <!-- Presentation Slides Highlight -->
                 <div class="colab-uploader">
-                    <h3>Lokaler Notebook-Inspektor</h3>
-                    <p>Ziehen Sie Ihr `.ipynb` Notebook in den Bereich, um die Struktur und den Code direkt hier zu prüfen.</p>
+                    <h3>Präsentations-Folien</h3>
+                    <p>Öffnen Sie unsere offizielle Präsentation mit allen theoretischen Grundlagen und Grafiken zum Thema KI-Agenten.</p>
                     
-                    <div class="drop-zone" id="ipynb-drop-zone">
-                        <i class="fa-solid fa-file-arrow-up drop-icon"></i>
-                        <span class="drop-text">Notebook-Datei (.ipynb) hierher ziehen oder klicken</span>
-                        <input type="file" id="ipynb-file-input" accept=".ipynb" style="display: none;">
-                    </div>
-
-                    <div class="upload-preview hidden" id="upload-preview-container">
-                        <div class="preview-header">
-                            <span class="file-name" id="preview-file-name">filename.ipynb</span>
-                            <button class="btn-close" id="btn-clear-upload"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                        <div class="preview-stats">
-                            <span id="preview-stat-cells">0 Zellen</span> | 
-                            <span id="preview-stat-code">0 Code-Zellen</span>
-                        </div>
-                        <div class="preview-cells" id="preview-cells-container">
-                            <!-- Cells rendered here -->
+                    <div class="slides-preview-container">
+                        <img src="assets/presentation_mockup.png" alt="Präsentation Folien" class="slides-preview-img">
+                        <div class="slides-overlay">
+                            <a href="https://docs.google.com/presentation/d/1exnf5O_MOL7HJgsxL6sOxzpocV6g7SlqSccAbNT3ra4/edit?usp=sharing" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fa-solid fa-file-powerpoint"></i> Folien öffnen
+                            </a>
                         </div>
                     </div>
                 </div>
