@@ -46,13 +46,26 @@
         
         <!-- Story section -->
         <section class="intro-card glass-panel">
-            <h2>Vom Modell zum Agenten: Die Evolution</h2>
-            <p>
-                Klassische Large Language Models (LLMs) sind wie ein <strong>Gehirn ohne Hände</strong>. Sie können Texte generieren, 
-                Antworten formulieren und Ratschläge geben, aber sie können keine Aktionen in der echten Welt ausführen. 
-                <strong>KI-Agenten</strong> verändern das grundlegend. Sie kombinieren die Intelligenz von Sprachmodellen mit 
-                <strong>Werkzeugen (Tools)</strong> und einer <strong>autonomen Logik (Orchestrierung)</strong>, um komplexe Ziele eigenständig zu verfolgen.
-            </p>
+            <div class="intro-layout">
+                <div class="intro-text">
+                    <h2>Vom Modell zum Agenten: Die Evolution</h2>
+                    <p>
+                        Klassische Large Language Models (LLMs) sind wie ein <strong>Gehirn ohne Hände</strong>. Sie können Texte generieren, 
+                        Antworten formulieren und Ratschläge geben, aber sie können keine Aktionen in der echten Welt ausführen. 
+                        <strong>KI-Agenten</strong> verändern das grundlegend. Sie kombinieren die Intelligenz von Sprachmodellen mit 
+                        <strong>Werkzeugen (Tools)</strong> und einer <strong>autonomen Logik (Orchestrierung)</strong>, um komplexe Ziele eigenständig zu verfolgen.
+                    </p>
+                </div>
+                <div class="intro-image-container">
+                    <div class="intro-image-wrapper" id="history-image-trigger" title="Klicken zum Vergrößern">
+                        <img src="/static/assets/agent-history.jpg" alt="Evolution der KI-Agenten" class="intro-history-img">
+                        <div class="image-overlay">
+                            <i class="fa-solid fa-magnifying-glass-plus overlay-icon"></i>
+                            <span>Bild vergrößern</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- KMU Menu Section -->
@@ -88,30 +101,56 @@
             </div>
         </section>
 
-        <!-- 3D Interactive Presentation Section -->
+        <!-- Interactive Presentation Section -->
         <section class="presentation-section">
             <div class="section-header">
-                <h2>Die 4 Säulen eines KI-Agenten</h2>
-                <p>Navigieren Sie durch die 3D-Welt. Klicken Sie auf die rotierenden 3D-Objekte, um die Kernbereiche zu erkunden.</p>
+                <h2>Was macht einen KI-Agenten aus?</h2>
+                <p>Klicken Sie auf die verschiedenen Bereiche der Agenten-Architektur, um die Kernkomponenten zu erkunden.</p>
             </div>
             
             <div class="presentation-grid">
-                <!-- 3D Canvas Container -->
-                <div class="canvas-container glass-panel">
-                    <canvas id="three-canvas"></canvas>
-                    <div id="three-fallback-container" class="hidden" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; background: #06060c; text-align: center; z-index: 2;">
-                        <i class="fa-solid fa-cubes placeholder-icon" style="font-size: 3rem; color: var(--color-primary); margin-bottom: 15px;"></i>
-                        <h3 style="color: white; margin-bottom: 10px;">Interaktive 4 Säulen</h3>
-                        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; max-width: 400px;">Klicken Sie auf eine der Schaltflächen, um die Details zu den Kernkomponenten anzuzeigen:</p>
-                        <div class="quick-selectors" style="max-width: 320px; width: 100%;">
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(0)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">1. Modell (Gehirn)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(1)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">2. Werkzeuge (Hände)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(2)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">3. Orchestrierung (Nervensystem)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(3)" style="width: 100%; color: white; border-color: rgba(255,255,255,0.2);">4. Bereitstellung (Praxis)</button>
+                <!-- Interactive Pillars Container -->
+                <div class="canvas-container glass-panel interactive-pillars-wrapper">
+                    <!-- SVG Network Connectors -->
+                    <svg class="connectors-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <!-- Top-Left connection -->
+                        <path class="connector-path" d="M 50 50 L 22 22" id="connector-0"></path>
+                        <!-- Top-Right connection -->
+                        <path class="connector-path" d="M 50 50 L 78 22" id="connector-1"></path>
+                        <!-- Bottom-Left connection -->
+                        <path class="connector-path" d="M 50 50 L 22 78" id="connector-2"></path>
+                        <!-- Bottom-Right connection -->
+                        <path class="connector-path" d="M 50 50 L 78 78" id="connector-3"></path>
+                    </svg>
+                    
+                    <!-- Central Hub -->
+                    <div class="pillars-hub">
+                        <div class="hub-pulse"></div>
+                        <div class="hub-core">
+                            <i class="fa-solid fa-robot"></i>
+                            <span>Agent</span>
                         </div>
                     </div>
-                    <div class="canvas-overlay-instruction" id="three-instruction-label">
-                        <i class="fa-solid fa-hand-pointer pulse-icon"></i> Klicken Sie auf ein 3D-Objekt zum Interagieren
+
+                    <!-- 4 Pillars Cards -->
+                    <div class="pillar-card p-top-left" onclick="selectTopic(0)">
+                        <div class="pillar-icon-box"><i class="fa-solid fa-brain"></i></div>
+                        <span class="pillar-title">Reasoning (LLM)</span>
+                    </div>
+
+                    <div class="pillar-card p-top-right" onclick="selectTopic(1)">
+                        <div class="pillar-icon-box"><i class="fa-solid fa-memory"></i></div>
+                        <span class="pillar-title">Gedächtnis</span>
+                    </div>
+
+                    <div class="pillar-card p-bottom-left" onclick="selectTopic(2)">
+                        <div class="pillar-icon-box"><i class="fa-solid fa-toolbox"></i></div>
+                        <span class="pillar-title">Werkzeuge</span>
+                    </div>
+
+                    <div class="pillar-card p-bottom-right" onclick="selectTopic(3)">
+                        <div class="pillar-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="pillar-title">Orchestrator</span>
                     </div>
                 </div>
 
@@ -120,12 +159,12 @@
                     <div class="panel-placeholder" id="panel-placeholder-content">
                         <i class="fa-solid fa-cubes-stacked placeholder-icon"></i>
                         <h3>Wählen Sie eine Säule aus</h3>
-                        <p>Klicken Sie auf eines der schwebenden 3D-Objekte auf der linken Seite, um Details zu Gehirn, Werkzeugen, Orchestrierung und Bereitstellung anzuzeigen.</p>
+                        <p>Klicken Sie auf eines der interaktiven Segmente auf der linken Seite, um Details zu Gehirn, Gedächtnis, Werkzeugen und Orchestrierung anzuzeigen.</p>
                         <div class="quick-selectors">
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(0)">1. Modell (Gehirn)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(1)">2. Werkzeuge (Hände)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(2)">3. Orchestrierung (Nervensystem)</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectTopic(3)">4. Bereitstellung (Praxis)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(0)">1. Reasoning-Kern (LLM)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(1)">2. Gedächtnis (Memory)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(2)">3. Werkzeugekasten (Tools)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(3)">4. Orchestrator & Guardrails</button>
                         </div>
                     </div>
                     
@@ -265,13 +304,9 @@
         </div>
     </footer>
 
-    <!-- Three.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- Three.js shaders or additional geometries if needed -->
     <!-- Custom Scripts -->
-    <script src="/static/js/three-scene.js"></script>
     <script src="/static/js/main.js"></script>
+
     <!-- Quiz Modal overlay -->
     <div id="quiz-modal" class="modal-overlay hidden">
         <div class="modal-content glass-panel">
@@ -297,6 +332,19 @@
                     <p id="quiz-result-score" style="font-size: 1.1rem; margin: 10px 0; color:var(--color-text-muted);">Sie haben 0 von 0 Fragen richtig beantwortet.</p>
                     <button class="btn btn-outline" id="btn-restart-quiz" style="width: 100%; margin-top:15px;">Erneut versuchen</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="image-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel" style="max-width: 900px; padding: 24px; text-align: center; position: relative;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-clock-rotate-left text-highlight"></i> Evolution der KI-Agenten</h3>
+                <button class="btn-close" id="btn-close-image-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" style="padding-top: 10px;">
+                <img src="/static/assets/agent-history.jpg" alt="Evolution der KI-Agenten" style="width: 100%; height: auto; border-radius: var(--border-radius-sm); border: 1px solid var(--color-border); box-shadow: var(--shadow-premium);">
             </div>
         </div>
     </div>

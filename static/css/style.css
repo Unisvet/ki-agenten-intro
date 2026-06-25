@@ -905,7 +905,7 @@ code {
     width: 100%;
     height: 100%;
     display: block;
-    background: #06060c;
+    background: transparent; /* Allows office background image to show */
 }
 
 .roadmap-back-btn {
@@ -915,26 +915,83 @@ code {
     z-index: 10;
 }
 
-.roadmap-sidebar {
+/* Clickable Sidebar Menu Toggle Button */
+.roadmap-sidebar-toggle {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 440px;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-    z-index: 10;
-    animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 20; /* Keep above the sidebar overlay */
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.roadmap-sidebar-toggle.active {
+    background-color: var(--color-text-main);
+    border-color: var(--color-text-main);
+    color: white;
+}
+
+/* Sidebar Details Panel - Collapsed by default, opens to cover half the screen */
+.roadmap-sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50vw; /* Takes half the screen */
+    max-width: 50%;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.9) !important; /* Premium light glass overlay */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 15;
+    transform: translateX(100%); /* Start off-screen */
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
+    padding: 80px 40px 40px 40px; /* Generous spacing, leaving room for top controls */
+}
+
+.roadmap-sidebar.open {
+    transform: translateX(0); /* Slide open */
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 768px) {
     .roadmap-sidebar {
-        width: calc(100% - 40px);
-        right: 20px;
+        width: 100vw;
+        max-width: 100%;
+        height: 60vh;
+        max-height: 60vh;
+        top: auto;
+        bottom: 0;
+        border-left: none;
+        border-top: 1px solid var(--color-border);
+        transform: translateY(100%); /* Slides from bottom on mobile */
+        padding: 40px 20px 20px 20px;
+    }
+    
+    .roadmap-sidebar.open {
+        transform: translateY(0);
+    }
+    
+    .roadmap-sidebar-toggle {
         top: auto;
         bottom: 20px;
-        max-height: 60vh;
+        transition: bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Move toggle button above sidebar when open on mobile */
+    .roadmap-sidebar.open ~ .roadmap-sidebar-toggle {
+        bottom: calc(60vh + 20px);
     }
 }
 
@@ -1172,4 +1229,320 @@ code {
     background: url('/static/assets/future_workplace.png') no-repeat center center fixed !important;
     background-size: cover !important;
 }
+
+/* ==========================================================================
+   Interactive Pillars & SVG Connectors Styles
+   ========================================================================== */
+
+.interactive-pillars-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.78) !important; /* Premium light glassmorphism */
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid var(--color-border) !important;
+    box-shadow: var(--shadow-premium) !important;
+    display: block;
+    height: 480px;
+    overflow: hidden;
+}
+
+.connectors-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.connector-path {
+    fill: none;
+    stroke: rgba(205, 10, 30, 0.1); /* Light red tint for paths */
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 6 12;
+    transition: var(--transition-smooth);
+    animation: flow 4s linear infinite;
+}
+
+/* Flow animation for SVG dashes */
+@keyframes flow {
+    to {
+        stroke-dashoffset: -36;
+    }
+}
+
+.connector-path.active {
+    stroke: var(--color-primary);
+    stroke-width: 3.5;
+    filter: drop-shadow(0 0 5px rgba(205, 10, 30, 0.4));
+    animation-duration: 1.5s;
+}
+
+/* Central Hub */
+.pillars-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hub-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(205, 10, 30, 0.4);
+    animation: pulse-glow 2.5s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(0.85); opacity: 0.8; }
+    50% { transform: scale(1.25); opacity: 0.4; }
+    100% { transform: scale(1.65); opacity: 0; }
+}
+
+.hub-core {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 4px 15px rgba(205, 10, 30, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-main);
+    gap: 4px;
+}
+
+.hub-core i {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.hub-core span {
+    font-size: 0.7rem;
+    font-family: var(--font-headings);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Pillar Cards */
+.pillar-card {
+    position: absolute;
+    z-index: 4;
+    cursor: pointer;
+    width: 180px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(205, 10, 30, 0.15);
+    border-radius: var(--border-radius-md);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-text-muted);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: var(--transition-smooth);
+}
+
+.pillar-card:hover {
+    transform: scale(1.05) translateY(-2px);
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(205, 10, 30, 0.35);
+    box-shadow: 0 8px 25px rgba(205, 10, 30, 0.08);
+    color: var(--color-text-main);
+}
+
+.pillar-card.active {
+    background: rgba(205, 10, 30, 0.06) !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 8px 25px rgba(205, 10, 30, 0.12), 0 0 10px var(--color-primary-glow) !important;
+    color: var(--color-text-main) !important;
+}
+
+.pillar-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(205, 10, 30, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    transition: var(--transition-smooth);
+}
+
+.pillar-card.active .pillar-icon-box {
+    background: var(--color-primary);
+    color: white;
+}
+
+.pillar-title {
+    font-size: 0.85rem;
+    font-family: var(--font-headings);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Card Absolute Positions */
+.p-top-left {
+    top: 15%;
+    left: 8%;
+}
+
+.p-top-right {
+    top: 15%;
+    right: 8%;
+}
+
+.p-bottom-left {
+    bottom: 15%;
+    left: 8%;
+}
+
+.p-bottom-right {
+    bottom: 15%;
+    right: 8%;
+}
+
+/* Responsive Overrides for Pillars */
+@media (max-width: 992px) {
+    .p-top-left { left: 4%; }
+    .p-top-right { right: 4%; }
+    .p-bottom-left { left: 4%; }
+    .p-bottom-right { right: 4%; }
+}
+
+@media (max-width: 768px) {
+    .interactive-pillars-wrapper {
+        height: auto;
+        padding: 24px;
+        display: block;
+    }
+    
+    .connectors-svg,
+    .pillars-hub {
+        display: none;
+    }
+    
+    .interactive-pillars-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .pillar-card {
+        position: static;
+        width: 100%;
+        padding: 14px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .interactive-pillars-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Evolution Section & Lightbox Styles
+   ========================================================================== */
+
+.intro-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 32px;
+    align-items: center;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        text-align: center;
+    }
+}
+
+.intro-text h2 {
+    font-family: var(--font-headings);
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: var(--color-text-main);
+}
+
+.intro-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-image-wrapper {
+    position: relative;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--color-border);
+    transition: var(--transition-smooth);
+    width: 100%;
+    max-width: 320px;
+}
+
+.intro-image-wrapper:hover {
+    transform: scale(1.03);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 25px rgba(205, 10, 30, 0.15);
+}
+
+.intro-history-img {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.intro-image-wrapper:hover .image-overlay {
+    opacity: 1;
+}
+
+.overlay-icon {
+    font-size: 1.8rem;
+    color: white;
+}
+
 

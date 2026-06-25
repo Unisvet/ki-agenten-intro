@@ -4,51 +4,51 @@
 const topicsData = [
     {
         num: "Säule 1",
-        title: "Modell (Das Gehirn)",
-        desc: "Das Sprachmodell (LLM) dient als zentrales Gehirn des Agenten. Es ist verantwortlich für das Verständnis natürlicher Sprache, das Treffen von Entscheidungen, das Lösen von Problemen und das Planen zukünftiger Schritte.",
+        title: "Reasoning-Kern (LLM)",
+        desc: "Das Sprachmodell (LLM) dient als zentraler kognitiver Kern. Es analysiert Absichten, trifft Entscheidungen, zerlegt komplexe Aufgaben und plant Lösungswege.",
         bullets: [
-            { icon: "fa-brain", title: "Verständnis & Generierung", text: "Verarbeitet Benutzeranfragen in natürlicher Sprache und generiert kontextbezogene, verständliche Antworten." },
-            { icon: "fa-route", title: "Planungsfähigkeit (Reasoning)", text: "Zerlegt komplexe Aufgaben eigenständig in logische Teilaufgaben (z. B. durch Chain-of-Thought-Prompts)." },
-            { icon: "fa-sliders", title: "Gemini 2.5 & 3.5 Flash", text: "Optimierte Modelle bieten schnelle Reaktionszeiten und hohe Genauigkeit für Echtzeit-Entscheidungen im Unternehmen." },
-            { icon: "fa-ban", title: "Modellgrenzen überwinden", text: "Das Modell allein ist statisch ('Gehirn ohne Hände'). Erst durch Verbindung mit Werkzeugen wird es aktiv handlungsfähig." }
+            { icon: "fa-brain", title: "Verständnis & Generierung", text: "Verarbeitet Benutzeranfragen in natürlicher Sprache und generiert präzise, kontextbezogene Antworten." },
+            { icon: "fa-route", title: "Planungsfähigkeit (Reasoning)", text: "Zerlegt Aufgaben eigenständig in logische Teiloperationen (z. B. durch Chain-of-Thought oder ReAct-Prompts)." },
+            { icon: "fa-sliders", title: "Optimierte Modelle", text: "Modelle wie Gemini 1.5/2.5 Pro & Flash bieten schnelle Reaktionszeiten und hohe Genauigkeit für Echtzeit-Entscheidungen." },
+            { icon: "fa-plug-circle-bolt", title: "Modellgrenzen überwinden", text: "Das LLM allein ist statisch ('Gehirn ohne Hände'). Erst durch die Verbindung mit Gedächtnis und Werkzeugen wird es handlungsfähig." }
         ]
     },
     {
         num: "Säule 2",
-        title: "Werkzeuge (Die Hände / Tools & MCP)",
-        desc: "Werkzeuge (Tools) sind Schnittstellen (APIs), Code-Ausführungsumgebungen, Websuchen oder Datenbanken, auf die der Agent zugreift, um Aktionen in der Außenwelt durchzuführen.",
+        title: "Gedächtnis (Memory)",
+        desc: "Das Gedächtnis ermöglicht dem Agenten das Speichern, Verwalten und Abrufen von Informationen über einzelne Interaktionen hinweg.",
         bullets: [
-            { icon: "fa-plug", title: "Erweiterung der Fähigkeiten", text: "Ermöglicht dem Agenten, das aktuelle Wetter abzufragen, Berechnungen auszuführen oder E-Mails zu senden." },
-            { icon: "fa-database", title: "Datenquellen anbinden", text: "Über Datenbank-Tools kann der Agent auf aktuelle Unternehmensdaten zugreifen, statt sich auf veraltete Trainingsdaten zu verlassen." },
-            { icon: "fa-network-wired", title: "Model Context Protocol (MCP)", text: "Ein offener Standard, der die n:m-Verbindungsproblematik löst und eine einheitliche Kommunikation zwischen Hosts, Clients und Tool-Servern ermöglicht." },
-            { icon: "fa-shield-halved", title: "Sicherheit & Governance", text: "Regelt genaue Berechtigungen für Aktionen, um unerwünschten Zugriff oder Fehlfunktionen bei kritischen Systemen zu verhindern." }
+            { icon: "fa-comments", title: "Session-Kontext (Kurzzeit)", text: "Verwaltung des aktuellen Chat-Verlaufs, um direkte Anschlussfragen korrekt beantworten zu können." },
+            { icon: "fa-clock-rotate-left", title: "Langzeitgedächtnis", text: "Persistente Speicherung von Benutzerpräferenzen, Profilen und historischen Interaktionen." },
+            { icon: "fa-database", title: "Semantische Suche (RAG)", text: "Einbindung von Vektordatenbanken (z. B. Vertex AI Vector Search) zum Abrufen relevanter Unternehmensdokumente." },
+            { icon: "fa-arrows-spin", title: "Dynamisches Lernen", text: "Möglichkeit, den eigenen Wissensstand basierend auf Benutzerfeedback oder neuen Daten anzupassen." }
         ]
     },
     {
         num: "Säule 3",
-        title: "Orchestrierung (Das Nervensystem)",
-        desc: "Die Orchestrierung (Orchestration) ist die Kontrolllogik, die das Modell und die Werkzeuge verbindet. Sie verwaltet den Schleifen-Ablauf, steuert das Gedächtnis (Memory) und pflegt den aktuellen Status.",
+        title: "Werkzeugekasten (Tools & APIs)",
+        desc: "Werkzeuge (Tools) sind die Schnittstellen zur Außenwelt. Sie verwandeln den statischen Agenten in eine aktive, handlungsfähige Software.",
         bullets: [
-            { icon: "fa-arrows-spin", title: "Die ReAct-Schleife", text: "Ein zyklischer Ablauf aus Denken (Reasoning), Handeln (Action) und Beobachten (Observation), bis das Ziel erreicht ist." },
-            { icon: "fa-memory", title: "Kontext & Gedächtnis", text: "Speichert vergangene Schritte und Zwischenergebnisse, damit der Agent auch bei langen Prozessen den roten Faden behält." },
-            { icon: "fa-heartbeat", title: "Selbstkorrektur", text: "Erkennt der Agent bei einer Aktion einen Fehler (z.B. eine Fehlermeldung einer API), passt er seinen Plan autonom an." },
-            { icon: "fa-chart-pie", title: "Wann Agenten nutzen?", text: "Nur bei Aufgaben, die Reasoning (Planung), Tool-Use (Werkzeuge) und Autonomie (Eigenständigkeit) erfordern. Einfache Tasks sind als klassische Skripte besser aufgehoben." }
+            { icon: "fa-plug", title: "System-Schnittstellen", text: "Anbindung an APIs von CRMs, ERPs, E-Mail-Systemen, Wetterdiensten oder Datenbanken." },
+            { icon: "fa-code", title: "Code-Ausführung (Sandboxing)", text: "Lokales Ausführen von Python-Skripten zur exakten Berechnung mathematischer oder analytischer Probleme." },
+            { icon: "fa-network-wired", title: "Model Context Protocol (MCP)", text: "Ein neuer, offener Standard zur einheitlichen, sicheren Kommunikation zwischen LLMs und Tool-Servern." },
+            { icon: "fa-magnifying-glass", title: "Echtzeit-Websuche", text: "Autonome Recherche im Internet, um veraltete Trainingsdaten durch aktuelle Informationen zu ergänzen." }
         ]
     },
     {
         num: "Säule 4",
-        title: "Bereitstellung (Die Praxis / ADK & Cloud)",
-        desc: "Die praktische Umsetzung erfolgt über Entwicklungs-Kits und Hosting-Plattformen. Google bietet mit dem Agent Development Kit (ADK) ein mächtiges Framework zur Erstellung von Agenten.",
+        title: "Orchestrator & Guardrails",
+        desc: "Die Orchestrierung steuert den Ablaufzyklus, während Guardrails (Sicherheitsleitplanken) für Governance, Datenschutz und Risikominimierung sorgen.",
         bullets: [
-            { icon: "fa-code", title: "Code-basierte Definition", text: "Entwicklung von Agenten direkt in Python (agent.py) unter Verwendung des google.adk Software Development Kits." },
-            { icon: "fa-file-code", title: "Konfigurations-basiert (agent.yaml)", text: "Definition von Agent-Eigenschaften (Name, Modell, Systemanweisungen, Tools) in YAML zur klaren Trennung von Logik und Konfiguration." },
-            { icon: "fa-desktop", title: "adk web & adk deploy", text: "Lokales interaktives Testen im Browser mit `adk web` und direktes Deployment in die Cloud mit `adk deploy`." },
-            { icon: "fa-cloud-arrow-up", title: "Google Cloud Run", text: "Der Agent wird in einem Docker-Container verpackt und serverlos in Cloud Run bereitgestellt, um hohe Skalierbarkeit und geringe Latenz zu garantieren." }
+            { icon: "fa-arrows-split-up-and-left", title: "Ablaufsteuerung (Loops)", text: "Verwaltung von Schleifen wie ReAct (Denken, Handeln, Beobachten) zur autonomen Problemlösung." },
+            { icon: "fa-shield-halved", title: "Guardrails & Sicherheit", text: "Schutz vor Prompt-Injections, Filtern von Halluzinationen und Einhaltung von DSGVO/EU AI Act Vorgaben." },
+            { icon: "fa-user-check", title: "Human-in-the-Loop (HITL)", text: "Sicherheitsstufen zur manuellen Freigabe bei kritischen Aktionen (z. B. Überweisungen oder Mailversand)." },
+            { icon: "fa-chart-line", title: "Monitoring & Kostenkontrolle", text: "Protokollierung aller Agenten-Schritte, Latenzen und des genauen Token-Verbrauchs." }
         ]
     }
 ];
 
-// Topic Selection handler (called by Three.js raycaster and quick selectors)
+// Topic Selection handler (called by interactive HTML pillars and quick selectors)
 function selectTopic(index) {
     const placeholder = document.getElementById('panel-placeholder-content');
     const content = document.getElementById('panel-active-content');
@@ -86,6 +86,24 @@ function selectTopic(index) {
 
         // Fade in
         content.style.opacity = 1;
+
+        // Update active class on HTML cards
+        document.querySelectorAll('.pillar-card').forEach((card, idx) => {
+            if (idx === index) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        // Update active class on connecting lines
+        document.querySelectorAll('.connector-path').forEach((path, idx) => {
+            if (idx === index) {
+                path.classList.add('active');
+            } else {
+                path.classList.remove('active');
+            }
+        });
     }, 200);
 }
 
@@ -329,6 +347,10 @@ function showOverview() {
         content.classList.add('hidden');
         placeholder.classList.remove('hidden');
         placeholder.style.opacity = 1;
+
+        // De-highlight all cards and connectors
+        document.querySelectorAll('.pillar-card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.connector-path').forEach(path => path.classList.remove('active'));
     }, 200);
 }
 
@@ -479,4 +501,23 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-close-quiz').addEventListener('click', closeQuiz);
     document.getElementById('btn-next-quiz').addEventListener('click', nextQuestion);
     document.getElementById('btn-restart-quiz').addEventListener('click', startQuiz);
+
+    // Image Lightbox bindings
+    const imageModal = document.getElementById('image-modal');
+    const imageTrigger = document.getElementById('history-image-trigger');
+    const closeImageBtn = document.getElementById('btn-close-image-modal');
+    if (imageTrigger && imageModal && closeImageBtn) {
+        imageTrigger.addEventListener('click', () => {
+            imageModal.classList.remove('hidden');
+        });
+        closeImageBtn.addEventListener('click', () => {
+            imageModal.classList.add('hidden');
+        });
+        // Also close when clicking outside the content area
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.add('hidden');
+            }
+        });
+    }
 });
