@@ -1,15 +1,17 @@
-// Three.js full-screen 3D Roadmap Scene for kmu.html
+// Three.js full-screen 3D Roadmap Scene for kmu.html with Floating Drones
 
 let scene, camera, renderer;
 let starParticles;
 let pathCurve;
 let roadmapNodes = [];
 let roadmapLabels = [];
+let roadmapDrones = [];
+let droneLabels = [];
 let raycaster, mouse;
 let container;
 
 // Camera target coordinates for smooth flight transitions
-const defaultCameraPos = new THREE.Vector3(0, 1, 9);
+const defaultCameraPos = new THREE.Vector3(0, 1.2, 8.5);
 const defaultLookAt = new THREE.Vector3(0, 0, 0);
 let targetCameraPos = defaultCameraPos.clone();
 let targetLookAt = defaultLookAt.clone();
@@ -33,40 +35,42 @@ const nodeTitles = [
 
 function initRoadmap() {
     container = document.querySelector('.fullscreen-layout');
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth || 800;
+    const height = window.innerHeight || 600;
 
     // 1. Scene Setup
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x06060c);
-    scene.fog = new THREE.FogExp2(0x06060c, 0.04);
+    // Transparent background so the futuristic office image shows through
+    scene.background = null;
 
     // 2. Camera Setup
     camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.copy(defaultCameraPos);
 
-    // 3. Renderer Setup
-    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('roadmap-canvas'), antialias: true });
+    // 3. Renderer Setup (Enable alpha transparency)
+    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('roadmap-canvas'), antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0); // Transparent clear color
 
     // 4. Lights Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
     dirLight1.position.set(5, 5, 5);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xcd0a1e, 1.5); // Brand red light glow
-    dirLight2.position.set(-5, -5, -3);
+    const dirLight2 = new THREE.DirectionalLight(0xcd0a1e, 1.8); // Brand red light glow
+    dirLight2.position.set(-5, -3, -3);
     scene.add(dirLight2);
 
     // 5. Starfield background particles
     createStarfield();
 
-    // 6. Draw Roadmap Path & Nodes
+    // 6. Draw Roadmap Path, Nodes, and Drones
     buildRoadmap();
+    buildDrones();
 
     // 7. Raycaster & Event Listeners
     raycaster = new THREE.Raycaster();
@@ -81,7 +85,7 @@ function initRoadmap() {
 }
 
 function createStarfield() {
-    const starsCount = 600;
+    const starsCount = 400;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(starsCount * 3);
 
@@ -97,7 +101,7 @@ function createStarfield() {
         color: 0xcd0a1e,
         size: 0.08,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.4,
         sizeAttenuation: true
     });
 
@@ -115,8 +119,8 @@ function buildRoadmap() {
     const pathMaterial = new THREE.LineBasicMaterial({
         color: 0xcd0a1e,
         transparent: true,
-        opacity: 0.45,
-        linewidth: 2 // Note: linewidth > 1 is usually not supported by WebGL implementations, but standard is fine
+        opacity: 0.5,
+        linewidth: 2
     });
     
     const pathLine = new THREE.Line(pathGeometry, pathMaterial);
@@ -131,7 +135,7 @@ function buildRoadmap() {
         const nodeMat = new THREE.MeshStandardMaterial({
             color: 0xcd0a1e,
             emissive: 0xcd0a1e,
-            emissiveIntensity: 0.6,
+            emissiveIntensity: 0.7,
             roughness: 0.2,
             metalness: 0.8
         });
@@ -151,12 +155,61 @@ function buildRoadmap() {
     });
 }
 
-// Camera transition flight functions (called by kmu-main.js)
+function buildDrones() {
+    const droneGeometry = new THREE.SphereGeometry(0.12, 16, 16);
+    const droneMaterial = new THREE.MeshStandardMaterial({
+        color: 0x06b6d4, // Cyan drone core
+        emissive: 0x06b6d4,
+        emissiveIntensity: 0.8,
+        roughness: 0.2,
+        metalness: 0.8
+    });
+
+    const ringGeometry = new THREE.TorusGeometry(0.24, 0.02, 8, 32);
+    const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true });
+
+    const labelContainer = document.getElementById('roadmap-label-container');
+
+    // Floating drone coordinates in the sky
+    const dronePositions = [
+        new THREE.Vector3(-4.0, 1.9, -1.0),
+        new THREE.Vector3(0.5, 2.1, 0.5),
+        new THREE.Vector3(4.0, 0.9, -1.0)
+    ];
+
+    dronePositions.forEach((pos, idx) => {
+        const droneGroup = new THREE.Group();
+        
+        const coreMesh = new THREE.Mesh(droneGeometry, droneMaterial);
+        droneGroup.add(coreMesh);
+
+        const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+        ringMesh.rotation.x = Math.PI / 2;
+        droneGroup.add(ringMesh);
+
+        droneGroup.position.copy(pos);
+        droneGroup.userData = { isDrone: true, droneIndex: idx, baseScale: 1 };
+
+        scene.add(droneGroup);
+        roadmapDrones.push(droneGroup);
+
+        // Create HTML overlay label for the drone quiz
+        const label = document.createElement('div');
+        label.className = 'roadmap-label-overlay';
+        label.style.borderColor = 'rgba(6, 182, 212, 0.7)';
+        label.style.color = '#e0f2fe';
+        label.innerHTML = `<i class="fa-solid fa-plane-up" style="color:#06b6d4; margin-right:6px;"></i> Drohnen-Quiz ${idx + 1}`;
+        labelContainer.appendChild(label);
+        droneLabels.push(label);
+    });
+}
+
+// Camera transition flight functions
 function focusNode(index) {
     const node = roadmapNodes[index];
     if (node) {
-        // Position camera slightly offset to the left/front of the node to leave space for the sidebar
-        targetCameraPos.set(node.position.x - 1.2, node.position.y + 0.3, node.position.z + 4.2);
+        // Shift camera left/front of the node to leave space for the wide sidebar on the right
+        targetCameraPos.set(node.position.x - 2.0, node.position.y + 0.3, node.position.z + 4.5);
         targetLookAt.copy(node.position);
     }
 }
@@ -176,16 +229,13 @@ function animate(time) {
 
     // Rotate star background slowly
     if (starParticles) {
-        starParticles.rotation.y = seconds * 0.01;
+        starParticles.rotation.y = seconds * 0.008;
     }
 
     // Animate and float 3D nodes
     roadmapNodes.forEach((node, idx) => {
-        // Slow float sine motion
-        node.position.y = nodePositions[idx].y + Math.sin(seconds * 2.0 + idx * 1.5) * 0.06;
-        
-        // Rotate nodes
-        node.rotation.y = seconds * 0.3;
+        node.position.y = nodePositions[idx].y + Math.sin(seconds * 1.8 + idx * 1.5) * 0.05;
+        node.rotation.y = seconds * 0.25;
 
         // Hover scale animation
         const targetScale = node.userData.hovered ? 1.35 : 1.0;
@@ -196,21 +246,48 @@ function animate(time) {
         if (label) {
             tempV.copy(node.position);
             tempV.project(camera);
-
-            // Convert to screen percentage pixels
             const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
             const y = (tempV.y * -0.5 + 0.5) * window.innerHeight;
 
             label.style.left = `${x}px`;
-            label.style.top = `${y - 25}px`; // Draw above the node
+            label.style.top = `${y - 25}px`;
 
-            // Hide labels that clip behind the camera plane
             if (tempV.z > 1) {
                 label.style.opacity = 0;
-                label.style.pointerEvents = 'none';
             } else {
                 label.style.opacity = 1;
-                label.style.pointerEvents = 'auto';
+            }
+        }
+    });
+
+    // Animate and float 3D drones
+    roadmapDrones.forEach((drone, idx) => {
+        // Drone bobbing motion
+        const basePos = idx === 0 ? 1.9 : idx === 1 ? 2.1 : 0.9;
+        drone.position.y = basePos + Math.sin(seconds * 2.8 + idx * 2.0) * 0.08;
+        
+        // Spin the drone rotor ring
+        drone.children[1].rotation.z = seconds * 7;
+
+        // Hover scale
+        const targetScale = drone.userData.hovered ? 1.35 : 1.0;
+        drone.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+
+        // Sync 2D label
+        const label = droneLabels[idx];
+        if (label) {
+            tempV.copy(drone.position);
+            tempV.project(camera);
+            const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+            const y = (tempV.y * -0.5 + 0.5) * window.innerHeight;
+
+            label.style.left = `${x}px`;
+            label.style.top = `${y - 20}px`;
+
+            if (tempV.z > 1) {
+                label.style.opacity = 0;
+            } else {
+                label.style.opacity = 1;
             }
         }
     });
@@ -229,8 +306,8 @@ function animate(time) {
 }
 
 function onWindowResize() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth || 800;
+    const height = window.innerHeight || 600;
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -243,16 +320,22 @@ function onMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    // Check node intersections
+    // Check intersections on both nodes and drones
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(roadmapNodes);
+    const targetObjects = [...roadmapNodes, ...roadmapDrones];
+    const intersects = raycaster.intersectObjects(targetObjects, true);
 
     let foundHoverObj = null;
 
     if (intersects.length > 0) {
-        foundHoverObj = intersects[0].object;
+        let curr = intersects[0].object;
+        while (curr.parent && curr.parent !== scene) {
+            curr = curr.parent;
+        }
+        foundHoverObj = curr;
     }
 
+    // Update hover states
     roadmapNodes.forEach((node, idx) => {
         const label = roadmapLabels[idx];
         if (node === foundHoverObj) {
@@ -265,6 +348,18 @@ function onMouseMove(event) {
         }
     });
 
+    roadmapDrones.forEach((drone, idx) => {
+        const label = droneLabels[idx];
+        if (drone === foundHoverObj) {
+            drone.userData.hovered = true;
+            if (label) label.classList.add('hovered');
+            document.body.style.cursor = 'pointer';
+        } else {
+            drone.userData.hovered = false;
+            if (label) label.classList.remove('hovered');
+        }
+    });
+
     if (!foundHoverObj) {
         document.body.style.cursor = 'default';
     }
@@ -273,21 +368,40 @@ function onMouseMove(event) {
 function onClick(event) {
     event.preventDefault();
 
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(roadmapNodes);
+    const targetObjects = [...roadmapNodes, ...roadmapDrones];
+    const intersects = raycaster.intersectObjects(targetObjects, true);
 
     if (intersects.length > 0) {
-        const clickedNode = intersects[0].object;
-        const index = clickedNode.userData.nodeIndex;
-        
-        // Trigger details sidebar in kmu-main.js
-        if (typeof selectRoadmapTopic === 'function') {
-            selectRoadmapTopic(index);
+        let curr = intersects[0].object;
+        while (curr.parent && curr.parent !== scene) {
+            curr = curr.parent;
+        }
+
+        if (curr.userData.isDrone) {
+            const droneIdx = curr.userData.droneIndex;
+            if (typeof openQuiz === 'function') {
+                openQuiz(droneIdx);
+            }
+        } else if (roadmapNodes.includes(curr)) {
+            const index = curr.userData.nodeIndex;
+            if (typeof selectRoadmapTopic === 'function') {
+                selectRoadmapTopic(index);
+            }
         }
     }
 }
 
-// Initialize on page load
+// Initialize on page load and trigger resizing
 window.addEventListener('DOMContentLoaded', () => {
     initRoadmap();
+    
+    // Sizing timing fixes
+    setTimeout(onWindowResize, 100);
+    setTimeout(onWindowResize, 500);
+    setTimeout(onWindowResize, 1000);
 });

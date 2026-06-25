@@ -1051,3 +1051,125 @@ code {
     from { transform: translateX(50px); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
+
+/* ==========================================================================
+   Quiz Modal & Dialogs
+   ========================================================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 15, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 0.25s forwards;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 580px;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 2px solid var(--color-primary) !important;
+    box-shadow: 0 20px 50px rgba(205, 10, 30, 0.18) !important;
+    animation: zoom-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes zoom-in {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-primary-faded);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-family: var(--font-headings);
+    color: var(--color-text-main);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 20px;
+}
+
+.quiz-option-btn {
+    background: #ffffff;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: 14px 20px;
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    outline: none;
+}
+
+.quiz-option-btn:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-faded);
+    transform: translateX(4px);
+    color: var(--color-primary);
+}
+
+.quiz-option-btn.selected {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-faded);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.quiz-option-btn.correct-choice {
+    border-color: var(--color-success);
+    background-color: rgba(16, 185, 129, 0.08);
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+.quiz-option-btn.wrong-choice {
+    border-color: var(--color-primary);
+    background-color: rgba(205, 10, 30, 0.08);
+    color: var(--color-primary);
+    text-decoration: line-through;
+}
+
+.feedback-status {
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: inline-block;
+}
+.feedback-status.correct {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+}
+.feedback-status.wrong {
+    background-color: rgba(205, 10, 30, 0.1);
+    color: var(--color-primary);
+}
+
+/* Background image overrides for kmu.html */
+.kmu-page-body {
+    background: url('/static/assets/future_workplace.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+}
+

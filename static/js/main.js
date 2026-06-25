@@ -332,9 +332,151 @@ function showOverview() {
     }, 200);
 }
 
+// ==========================================================================
+// Landing Page Quiz Logic
+// ==========================================================================
+
+let quizQuestions = [];
+let currentQuestionIndex = 0;
+let quizScore = 0;
+let selectedOptionIndex = null;
+
+async function initQuiz() {
+    try {
+        const response = await fetch('/static/quiz/questions.json');
+        quizQuestions = await response.json();
+    } catch (e) {
+        console.warn("Could not fetch quiz questions, using hardcoded fallback.");
+        quizQuestions = [
+            {
+                "id": 1,
+                "question": "Was unterscheidet einen KI-Agenten im Kern von einem klassischen Sprachmodell (LLM)?",
+                "options": [
+                    "Agenten sind größer und teurer in der Ausführung.",
+                    "Agenten können autonom handeln, Werkzeuge nutzen und langfristige Ziele über mehrere Schritte verfolgen.",
+                    "Agenten können ausschließlich auf lokaler Hardware betrieben werden."
+                ],
+                "correct": 1,
+                "explanation": "Ein LLM ist wie ein 'Gehirn ohne Hände'. Ein Agent hingegen kann durch Orchestrierungslogik autonom Aktionen planen, Tools aufrufen und Zwischenergebnisse auswerten."
+            },
+            {
+                "id": 2,
+                "question": "Was ist der Hauptvorteil von Open-Weights-Modellen wie Gemma 4 für den Mittelstand (KMU)?",
+                "options": [
+                    "Sie haben Zugriff auf das gesamte Echtzeit-Internet ohne APIs.",
+                    "Sie garantieren 100% Datensouveränität und DSGVO-Compliance, da sie komplett lokal auf eigener Hardware laufen.",
+                    "Sie benötigen keine Grafikkarte und laufen auf jedem alten PC."
+                ],
+                "correct": 1,
+                "explanation": "Durch lokales Ausführen über Tools wie Ollama verlassen sensible Kundendaten oder Geschäftsgeheimnisse das Firmennetzwerk nicht, was DSGVO-Compliance sicherstellt."
+            },
+            {
+                "id": 3,
+                "question": "Welche gesetzlichen Pflichten treten am 2. August 2026 durch den EU AI Act in Kraft?",
+                "options": [
+                    "Sämtliche KI-Systeme müssen in der Cloud betrieben werden.",
+                    "Strenge Auflagen (Risikomanagement, Logging, Aufsicht) für Hochrisiko-KI wie automatisierte HR-Bewerbersysteme.",
+                    "Ein generelles Verbot von KI im Kundenservice."
+                ],
+                "correct": 1,
+                "explanation": "Ab dem 2. August 2026 müssen Unternehmen, die KI-Systeme in 'Hochrisiko'-Bereichen wie Recruiting oder Personalmanagement einsetzen, strenge Transparenz-, Governance- und Logging-Auflagen erfüllen."
+            },
+            {
+                "id": 4,
+                "question": "Was versteht man unter dem Begriff 'Model Routing'?",
+                "options": [
+                    "Ein Sicherheitsverfahren zur Verschlüsselung von API-Schlüsseln.",
+                    "Das dynamische Zuweisen von Aufgaben: Einfache Aufgaben gehen an kleine, günstige Modelle, teure Modelle rechnen nur komplexe Logik.",
+                    "Das physische Weiterleiten von Netzwerkkabeln im lokalen Rechenzentrum."
+                ],
+                "correct": 1,
+                "explanation": "Durch Model Routing wird Rechenleistung effizient verteilt (z.B. Datenextraktion mit Gemma 2B, Reasoning mit Gemini Pro). Das senkt API-Token-Kosten um 30 % bis 70 %."
+            }
+        ];
+    }
+}
+
+function startQuiz() {
+    currentQuestionIndex = 0;
+    quizScore = 0;
+    document.getElementById('quiz-modal').classList.remove('hidden');
+    showQuestion();
+}
+
+function showQuestion() {
+    selectedOptionIndex = null;
+    document.getElementById('quiz-question-container').classList.remove('hidden');
+    document.getElementById('quiz-feedback-container').classList.add('hidden');
+    document.getElementById('quiz-result-container').classList.add('hidden');
+
+    const q = quizQuestions[currentQuestionIndex];
+    document.getElementById('quiz-question-text').innerText = q.question;
+
+    const optionsContainer = document.getElementById('quiz-options-container');
+    optionsContainer.innerHTML = '';
+
+    q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOption(idx);
+        optionsContainer.appendChild(btn);
+    });
+}
+
+function selectOption(index) {
+    if (selectedOptionIndex !== null) return;
+    selectedOptionIndex = index;
+
+    const q = quizQuestions[currentQuestionIndex];
+    const optionButtons = document.getElementById('quiz-options-container').children;
+
+    if (index === q.correct) {
+        optionButtons[index].classList.add('correct-choice');
+        document.getElementById('quiz-feedback-status').innerText = "✓ Richtig!";
+        document.getElementById('quiz-feedback-status').className = "feedback-status correct";
+        quizScore++;
+    } else {
+        optionButtons[index].classList.add('wrong-choice');
+        optionButtons[q.correct].classList.add('correct-choice');
+        document.getElementById('quiz-feedback-status').innerText = "✗ Falsch";
+        document.getElementById('quiz-feedback-status').className = "feedback-status wrong";
+    }
+
+    document.getElementById('quiz-feedback-text').innerText = q.explanation;
+    document.getElementById('quiz-feedback-container').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    document.getElementById('quiz-question-container').classList.add('hidden');
+    document.getElementById('quiz-feedback-container').classList.add('hidden');
+    document.getElementById('quiz-result-container').classList.remove('hidden');
+    document.getElementById('quiz-result-score').innerText = `Sie haben ${quizScore} von ${quizQuestions.length} Fragen richtig beantwortet.`;
+}
+
+function closeQuiz() {
+    document.getElementById('quiz-modal').classList.add('hidden');
+}
+
 // Initialise everything
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-start-simulation').addEventListener('click', runSimulation);
     document.getElementById('btn-back-to-overview').addEventListener('click', showOverview);
     initNotebookInspector();
+    
+    // Quiz bindings
+    initQuiz();
+    document.getElementById('btn-start-landing-quiz').addEventListener('click', startQuiz);
+    document.getElementById('btn-close-quiz').addEventListener('click', closeQuiz);
+    document.getElementById('btn-next-quiz').addEventListener('click', nextQuestion);
+    document.getElementById('btn-restart-quiz').addEventListener('click', startQuiz);
 });

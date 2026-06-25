@@ -312,5 +312,30 @@ function onCanvasClick(event) {
 
 // Initialise on load
 window.addEventListener('DOMContentLoaded', () => {
-    init3D();
+    try {
+        if (typeof THREE === 'undefined') {
+            throw new Error('Three.js library is not loaded.');
+        }
+        init3D();
+        // Trigger resize timeouts to guarantee matching CSS layout dimensions
+        setTimeout(onWindowResize, 100);
+        setTimeout(onWindowResize, 500);
+        setTimeout(onWindowResize, 1000);
+    } catch (e) {
+        console.warn('WebGL initialization failed, falling back to 2D buttons:', e);
+        const fallback = document.getElementById('three-fallback-container');
+        if (fallback) {
+            fallback.classList.remove('hidden');
+            // Force display: flex because tailwind/other styles might interfere with display
+            fallback.style.display = 'flex';
+        }
+        const canvas = document.getElementById('three-canvas');
+        if (canvas) {
+            canvas.style.display = 'none';
+        }
+        const instruction = document.getElementById('three-instruction-label');
+        if (instruction) {
+            instruction.style.display = 'none';
+        }
+    }
 });

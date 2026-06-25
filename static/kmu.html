@@ -16,7 +16,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="kmu-page-body">
 
     <!-- Fullscreen layout container -->
     <div class="fullscreen-layout">
@@ -72,5 +72,34 @@
     <!-- Custom Scripts -->
     <script src="/static/js/kmu-main.js"></script>
     <script src="/static/js/kmu-roadmap-scene.js"></script>
+    <!-- Quiz Modal overlay -->
+    <div id="quiz-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-question text-highlight"></i> Wissenstest</h3>
+                <button class="btn-close" onclick="closeQuiz()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="quiz-question-container">
+                    <h4 id="quiz-question-text">Frage?</h4>
+                    <div id="quiz-options-container" class="quiz-options">
+                        <!-- Options buttons injected dynamically -->
+                    </div>
+                </div>
+                <div id="quiz-feedback-container" class="hidden">
+                    <div id="quiz-feedback-status" class="feedback-status" style="font-weight:700; margin-bottom:10px; font-size:1.1rem;">Richtig/Falsch</div>
+                    <p id="quiz-feedback-text" style="color:var(--color-text-muted); font-size:0.95rem; line-height:1.5; margin-bottom:15px;">Erklärung...</p>
+                    <button class="btn btn-primary" id="btn-next-quiz" style="width: 100%;">Nächste Frage</button>
+                </div>
+                <div id="quiz-result-container" class="hidden" style="text-align: center;">
+                    <i class="fa-solid fa-trophy text-highlight" style="font-size: 3.5rem; color:var(--color-primary); margin-bottom: 15px; display:block;"></i>
+                    <h4 style="font-size:1.4rem; margin-bottom:8px;">Glückwunsch!</h4>
+                    <p id="quiz-result-score" style="font-size: 1.1rem; margin: 10px 0; color:var(--color-text-muted);">Sie haben 0 von 0 Fragen richtig beantwortet.</p>
+                    <button class="btn btn-outline" id="btn-restart-quiz" style="width: 100%; margin-top:15px;" onclick="restartQuiz()">Erneut versuchen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

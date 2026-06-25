@@ -99,7 +99,18 @@
                 <!-- 3D Canvas Container -->
                 <div class="canvas-container glass-panel">
                     <canvas id="three-canvas"></canvas>
-                    <div class="canvas-overlay-instruction">
+                    <div id="three-fallback-container" class="hidden" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; background: #06060c; text-align: center; z-index: 2;">
+                        <i class="fa-solid fa-cubes placeholder-icon" style="font-size: 3rem; color: var(--color-primary); margin-bottom: 15px;"></i>
+                        <h3 style="color: white; margin-bottom: 10px;">Interaktive 4 Säulen</h3>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; max-width: 400px;">Klicken Sie auf eine der Schaltflächen, um die Details zu den Kernkomponenten anzuzeigen:</p>
+                        <div class="quick-selectors" style="max-width: 320px; width: 100%;">
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(0)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">1. Modell (Gehirn)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(1)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">2. Werkzeuge (Hände)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(2)" style="width: 100%; margin-bottom: 8px; color: white; border-color: rgba(255,255,255,0.2);">3. Orchestrierung (Nervensystem)</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectTopic(3)" style="width: 100%; color: white; border-color: rgba(255,255,255,0.2);">4. Bereitstellung (Praxis)</button>
+                        </div>
+                    </div>
+                    <div class="canvas-overlay-instruction" id="three-instruction-label">
                         <i class="fa-solid fa-hand-pointer pulse-icon"></i> Klicken Sie auf ein 3D-Objekt zum Interagieren
                     </div>
                 </div>
@@ -220,6 +231,26 @@
             </div>
         </section>
 
+        <!-- Quiz Section -->
+        <section class="quiz-section-container glass-panel">
+            <div class="colab-layout">
+                <div class="colab-info">
+                    <h2><i class="fa-solid fa-graduation-cap text-highlight"></i> Wissenstest: Sind Sie bereit für KI-Agenten?</h2>
+                    <p>Testen Sie Ihr Wissen über KI-Agenten, lokale Modelle (Gemma 4), Sicherheitsrichtlinien und den EU AI Act. Beantworten Sie unsere interaktiven Fragen!</p>
+                    <div>
+                        <button class="btn btn-primary btn-lg" id="btn-start-landing-quiz"><i class="fa-solid fa-circle-question"></i> Quiz starten</button>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; background:rgba(205,10,30,0.03); border:1px dashed var(--color-border); border-radius:var(--border-radius-sm); padding:30px; text-align:center;">
+                    <div>
+                        <i class="fa-solid fa-award" style="font-size:4rem; color:var(--color-primary); margin-bottom:15px; display:block;"></i>
+                        <h4 style="margin-bottom:8px;">Teilnahme-Zertifikat</h4>
+                        <p style="font-size:0.9rem; color:var(--color-text-muted);">Schließen Sie das Quiz erfolgreich ab, um Ihr Wissen für den Digitaltag 2026 zu festigen.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -241,5 +272,34 @@
     <!-- Custom Scripts -->
     <script src="/static/js/three-scene.js"></script>
     <script src="/static/js/main.js"></script>
+    <!-- Quiz Modal overlay -->
+    <div id="quiz-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-question text-highlight"></i> Wissenstest</h3>
+                <button class="btn-close" id="btn-close-quiz"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="quiz-question-container">
+                    <h4 id="quiz-question-text">Frage?</h4>
+                    <div id="quiz-options-container" class="quiz-options">
+                        <!-- Options buttons injected dynamically -->
+                    </div>
+                </div>
+                <div id="quiz-feedback-container" class="hidden">
+                    <div id="quiz-feedback-status" class="feedback-status" style="font-weight:700; margin-bottom:10px; font-size:1.1rem;">Richtig/Falsch</div>
+                    <p id="quiz-feedback-text" style="color:var(--color-text-muted); font-size:0.95rem; line-height:1.5; margin-bottom:15px;">Erklärung...</p>
+                    <button class="btn btn-primary" id="btn-next-quiz" style="width: 100%;">Nächste Frage</button>
+                </div>
+                <div id="quiz-result-container" class="hidden" style="text-align: center;">
+                    <i class="fa-solid fa-trophy text-highlight" style="font-size: 3.5rem; color:var(--color-primary); margin-bottom: 15px; display:block;"></i>
+                    <h4 style="font-size:1.4rem; margin-bottom:8px;">Glückwunsch!</h4>
+                    <p id="quiz-result-score" style="font-size: 1.1rem; margin: 10px 0; color:var(--color-text-muted);">Sie haben 0 von 0 Fragen richtig beantwortet.</p>
+                    <button class="btn btn-outline" id="btn-restart-quiz" style="width: 100%; margin-top:15px;">Erneut versuchen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

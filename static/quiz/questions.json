@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "question": "Was unterscheidet einen KI-Agenten im Kern von einem klassischen Sprachmodell (LLM)?",
+    "options": [
+      "Agenten sind größer und teurer in der Ausführung.",
+      "Agenten können autonom handeln, Werkzeuge nutzen und langfristige Ziele über mehrere Schritte verfolgen.",
+      "Agenten können ausschließlich auf lokaler Hardware betrieben werden."
+    ],
+    "correct": 1,
+    "explanation": "Ein LLM ist wie ein 'Gehirn ohne Hände'. Ein Agent hingegen kann durch Orchestrierungslogik autonom Aktionen planen, Tools aufrufen und Zwischenergebnisse auswerten."
+  },
+  {
+    "id": 2,
+    "question": "Was ist der Hauptvorteil von Open-Weights-Modellen wie Gemma 4 für den Mittelstand (KMU)?",
+    "options": [
+      "Sie haben Zugriff auf das gesamte Echtzeit-Internet ohne APIs.",
+      "Sie garantieren 100% Datensouveränität und DSGVO-Compliance, da sie komplett lokal auf eigener Hardware laufen.",
+      "Sie benötigen keine Grafikkarte und laufen auf jedem alten PC."
+    ],
+    "correct": 1,
+    "explanation": "Durch lokales Ausführen über Tools wie Ollama verlassen sensible Kundendaten oder Geschäftsgeheimnisse das Firmennetzwerk nicht, was DSGVO-Compliance sicherstellt."
+  },
+  {
+    "id": 3,
+    "question": "Welche gesetzlichen Pflichten treten am 2. August 2026 durch den EU AI Act in Kraft?",
+    "options": [
+      "Sämtliche KI-Systeme müssen in der Cloud betrieben werden.",
+      "Strenge Auflagen (Risikomanagement, Logging, Aufsicht) für Hochrisiko-KI wie automatisierte HR-Bewerbersysteme.",
+      "Ein generelles Verbot von KI im Kundenservice."
+    ],
+    "correct": 1,
+    "explanation": "Ab dem 2. August 2026 müssen Unternehmen, die KI-Systeme in 'Hochrisiko'-Bereichen wie Recruiting oder Personalmanagement einsetzen, strenge Transparenz-, Governance- und Logging-Auflagen erfüllen."
+  },
+  {
+    "id": 4,
+    "question": "Was versteht man unter dem Begriff 'Model Routing'?",
+    "options": [
+      "Ein Sicherheitsverfahren zur Verschlüsselung von API-Schlüsseln.",
+      "Das dynamische Zuweisen von Aufgaben: Einfache Aufgaben gehen an kleine, günstige Modelle, teure Modelle rechnen nur komplexe Logik.",
+      "Das physische Weiterleiten von Netzwerkkabeln im lokalen Rechenzentrum."
+    ],
+    "correct": 1,
+    "explanation": "Durch Model Routing wird Rechenleistung effizient verteilt (z.B. Datenextraktion mit Gemma 2B, Reasoning mit Gemini Pro). Das senkt API-Token-Kosten um 30 % bis 70 %."
+  }
+]

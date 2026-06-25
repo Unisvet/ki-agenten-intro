@@ -234,8 +234,175 @@ function closeSidebar() {
     }, 200);
 }
 
-// Parse URL search parameters on load (e.g. kmu.html?topic=2)
+// ==========================================================================
+// Drone Quiz Logic
+// ==========================================================================
+
+let droneQuestions = [];
+let activeDroneIdx = null;
+let selectedQuizOptionIdx = null;
+let droneSolvedStatus = [false, false, false];
+
+async function initDroneQuiz() {
+    try {
+        const response = await fetch('/static/quiz/questions.json');
+        droneQuestions = await response.json();
+    } catch (e) {
+        console.warn("Could not fetch quiz questions, using hardcoded fallback.");
+        droneQuestions = [
+            {
+                "id": 1,
+                "question": "Was unterscheidet einen KI-Agenten im Kern von einem klassischen Sprachmodell (LLM)?",
+                "options": [
+                    "Agenten sind größer und teurer in der Ausführung.",
+                    "Agenten können autonom handeln, Werkzeuge nutzen und langfristige Ziele über mehrere Schritte verfolgen.",
+                    "Agenten können ausschließlich auf lokaler Hardware betrieben werden."
+                ],
+                "correct": 1,
+                "explanation": "Ein LLM ist wie ein 'Gehirn ohne Hände'. Ein Agent hingegen kann durch Orchestrierungslogik autonom Aktionen planen, Tools aufrufen und Zwischenergebnisse auswerten."
+            },
+            {
+                "id": 2,
+                "question": "Was ist der Hauptvorteil von Open-Weights-Modellen wie Gemma 4 für den Mittelstand (KMU)?",
+                "options": [
+                    "Sie haben Zugriff auf das gesamte Echtzeit-Internet ohne APIs.",
+                    "Sie garantieren 100% Datensouveränität und DSGVO-Compliance, da sie komplett lokal auf eigener Hardware laufen.",
+                    "Sie benötigen keine Grafikkarte und laufen auf jedem alten PC."
+                ],
+                "correct": 1,
+                "explanation": "Durch lokales Ausführen über Tools wie Ollama verlassen sensible Kundendaten oder Geschäftsgeheimnisse das Firmennetzwerk nicht, was DSGVO-Compliance sicherstellt."
+            },
+            {
+                "id": 3,
+                "question": "Welche gesetzlichen Pflichten treten am 2. August 2026 durch den EU AI Act in Kraft?",
+                "options": [
+                    "Sämtliche KI-Systeme müssen in der Cloud betrieben werden.",
+                    "Strenge Auflagen (Risikomanagement, Logging, Aufsicht) für Hochrisiko-KI wie automatisierte HR-Bewerbersysteme.",
+                    "Ein generelles Verbot von KI im Kundenservice."
+                ],
+                "correct": 1,
+                "explanation": "Ab dem 2. August 2026 müssen Unternehmen, die KI-Systeme in 'Hochrisiko'-Bereichen wie Recruiting oder Personalmanagement einsetzen, strenge Transparenz-, Governance- und Logging-Auflagen erfüllen."
+            }
+        ];
+    }
+}
+
+function openQuiz(droneIdx) {
+    activeDroneIdx = droneIdx;
+    selectedQuizOptionIdx = null;
+
+    // Retrieve corresponding question
+    const q = droneQuestions[droneIdx] || droneQuestions[droneIdx % droneQuestions.length];
+    if (!q) return;
+
+    // Reset UI
+    document.getElementById('quiz-modal').classList.remove('hidden');
+    document.getElementById('quiz-question-container').classList.remove('hidden');
+    document.getElementById('quiz-feedback-container').classList.add('hidden');
+    document.getElementById('quiz-result-container').classList.add('hidden');
+
+    // Set question text
+    document.getElementById('quiz-question-text').innerText = q.question;
+
+    // Render option buttons
+    const optionsContainer = document.getElementById('quiz-options-container');
+    optionsContainer.innerHTML = '';
+
+    q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectQuizOption(idx);
+        optionsContainer.appendChild(btn);
+    });
+
+    // Configure complete/close button
+    const nextBtn = document.getElementById('btn-next-quiz');
+    if (nextBtn) {
+        nextBtn.innerText = "Abschließen";
+        nextBtn.onclick = closeQuiz;
+    }
+}
+
+function selectQuizOption(index) {
+    if (selectedQuizOptionIdx !== null) return;
+    selectedQuizOptionIdx = index;
+
+    const q = droneQuestions[activeDroneIdx] || droneQuestions[activeDroneIdx % droneQuestions.length];
+    const optionButtons = document.getElementById('quiz-options-container').children;
+
+    const isCorrect = (index === q.correct);
+
+    if (isCorrect) {
+        optionButtons[index].classList.add('correct-choice');
+        document.getElementById('quiz-feedback-status').innerText = "✓ Richtig!";
+        document.getElementById('quiz-feedback-status').className = "feedback-status correct";
+        droneSolvedStatus[activeDroneIdx] = true;
+        
+        // Dynamic premium 3D response: turn drone green!
+        if (typeof roadmapDrones !== 'undefined' && roadmapDrones[activeDroneIdx]) {
+            const coreMesh = roadmapDrones[activeDroneIdx].children[0];
+            if (coreMesh && typeof THREE !== 'undefined') {
+                coreMesh.material = new THREE.MeshStandardMaterial({
+                    color: 0x10b981, // green
+                    emissive: 0x10b981,
+                    emissiveIntensity: 0.8,
+                    roughness: 0.2,
+                    metalness: 0.8
+                });
+            }
+        }
+        // Update 2D Label
+        if (typeof droneLabels !== 'undefined' && droneLabels[activeDroneIdx]) {
+            droneLabels[activeDroneIdx].innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981; margin-right:6px;"></i> Gelöst!`;
+            droneLabels[activeDroneIdx].style.borderColor = 'rgba(16, 185, 129, 0.7)';
+        }
+    } else {
+        optionButtons[index].classList.add('wrong-choice');
+        optionButtons[q.correct].classList.add('correct-choice');
+        document.getElementById('quiz-feedback-status').innerText = "✗ Falsch";
+        document.getElementById('quiz-feedback-status').className = "feedback-status wrong";
+        
+        // Turn drone red!
+        if (typeof roadmapDrones !== 'undefined' && roadmapDrones[activeDroneIdx]) {
+            const coreMesh = roadmapDrones[activeDroneIdx].children[0];
+            if (coreMesh && typeof THREE !== 'undefined') {
+                coreMesh.material = new THREE.MeshStandardMaterial({
+                    color: 0xcd0a1e, // red
+                    emissive: 0xcd0a1e,
+                    emissiveIntensity: 0.8,
+                    roughness: 0.2,
+                    metalness: 0.8
+                });
+            }
+        }
+        // Update 2D Label
+        if (typeof droneLabels !== 'undefined' && droneLabels[activeDroneIdx]) {
+            droneLabels[activeDroneIdx].innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#cd0a1e; margin-right:6px;"></i> Falsch!`;
+            droneLabels[activeDroneIdx].style.borderColor = 'rgba(205, 10, 30, 0.7)';
+        }
+    }
+
+    document.getElementById('quiz-feedback-text').innerText = q.explanation;
+    document.getElementById('quiz-feedback-container').classList.remove('hidden');
+}
+
+function closeQuiz() {
+    document.getElementById('quiz-modal').classList.add('hidden');
+}
+
+function restartQuiz() {
+    if (activeDroneIdx !== null) {
+        openQuiz(activeDroneIdx);
+    }
+}
+
+// Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
+    // Initialise Drone Quiz
+    initDroneQuiz();
+
+    // Parse URL search parameters on load (e.g. kmu.html?topic=2)
     const params = new URLSearchParams(window.location.search);
     const topicParam = params.get('topic');
     if (topicParam !== null) {
