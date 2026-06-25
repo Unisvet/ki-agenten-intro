@@ -1013,7 +1013,9 @@ code {
 /* 2D HTML labels rendered on top of 3D coordinates */
 .roadmap-label-overlay {
     position: absolute;
-    background: rgba(10, 10, 15, 0.85);
+    background: rgba(10, 10, 15, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(205, 10, 30, 0.6);
     color: #f8fafc;
     padding: 6px 14px;

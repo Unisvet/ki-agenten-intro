@@ -113,17 +113,19 @@ function buildRoadmap() {
     // Construct the path spline running through all nodes
     pathCurve = new THREE.CatmullRomCurve3(nodePositions);
     
-    // Draw the path line in 3D
-    const pathPoints = pathCurve.getPoints(100);
-    const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
-    const pathMaterial = new THREE.LineBasicMaterial({
+    // Draw the path line as a thick tube in 3D
+    const tubeGeometry = new THREE.TubeGeometry(pathCurve, 100, 0.05, 8, false);
+    const tubeMaterial = new THREE.MeshStandardMaterial({
         color: 0xcd0a1e,
         transparent: true,
-        opacity: 0.5,
-        linewidth: 2
+        opacity: 0.75,
+        emissive: 0xcd0a1e,
+        emissiveIntensity: 0.5,
+        roughness: 0.1,
+        metalness: 0.8
     });
     
-    const pathLine = new THREE.Line(pathGeometry, pathMaterial);
+    const pathLine = new THREE.Mesh(tubeGeometry, tubeMaterial);
     scene.add(pathLine);
 
     // Create 3D Nodes (Glowing red spheres) and their 2D HTML Label overlays
