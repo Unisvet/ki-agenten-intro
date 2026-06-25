@@ -117,7 +117,20 @@ body {
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    transition: var(--transition-smooth);
+}
+
+.badge-link {
+    text-decoration: none;
+    display: inline-flex;
+}
+
+.badge-link:hover .badge {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(205, 10, 30, 0.2);
 }
 
 .header-nav {
