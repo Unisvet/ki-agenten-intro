@@ -213,11 +213,6 @@ function selectRoadmapTopic(index) {
         const sidebar = document.getElementById('roadmap-sidebar');
         if (sidebar && !sidebar.classList.contains('open')) {
             sidebar.classList.add('open');
-            const toggleBtn = document.getElementById('sidebar-toggle-btn');
-            if (toggleBtn) {
-                toggleBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> <span class="toggle-text">Schließen</span>';
-                toggleBtn.classList.add('active');
-            }
         }
     }, 200);
 }
@@ -247,29 +242,8 @@ function closeSidebar() {
         const sidebar = document.getElementById('roadmap-sidebar');
         if (sidebar) {
             sidebar.classList.remove('open');
-            const toggleBtn = document.getElementById('sidebar-toggle-btn');
-            if (toggleBtn) {
-                toggleBtn.innerHTML = '<i class="fa-solid fa-bars"></i> <span class="toggle-text">Details</span>';
-                toggleBtn.classList.remove('active');
-            }
         }
     }, 200);
-}
-
-// Toggle sidebar manually
-function toggleSidebar() {
-    const sidebar = document.getElementById('roadmap-sidebar');
-    const toggleBtn = document.getElementById('sidebar-toggle-btn');
-    if (!sidebar || !toggleBtn) return;
-    
-    const isOpen = sidebar.classList.toggle('open');
-    if (isOpen) {
-        toggleBtn.classList.add('active');
-        toggleBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> <span class="toggle-text">Schließen</span>';
-    } else {
-        toggleBtn.classList.remove('active');
-        toggleBtn.innerHTML = '<i class="fa-solid fa-bars"></i> <span class="toggle-text">Details</span>';
-    }
 }
 
 // ==========================================================================

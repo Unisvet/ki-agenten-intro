@@ -32,11 +32,6 @@
             <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Zurück zur Einführung</a>
         </div>
 
-        <!-- Sidebar Toggle Button (Clickable Menu) -->
-        <button class="roadmap-sidebar-toggle btn btn-primary" id="sidebar-toggle-btn" onclick="toggleSidebar()">
-            <i class="fa-solid fa-bars"></i> <span class="toggle-text">Details</span>
-        </button>
-
         <!-- Sidebar Details Panel -->
         <div class="roadmap-sidebar glass-panel" id="roadmap-sidebar">
             <!-- Default Placeholder view -->
@@ -57,7 +52,6 @@
             <div id="sidebar-active-content" class="panel-content hidden">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <span class="topic-num" id="active-roadmap-num">Knoten 1</span>
-                    <button class="btn-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <h3 id="active-roadmap-title">Themenbereich</h3>
                 <div class="topic-desc" id="active-roadmap-desc" style="max-height: 50vh; overflow-y: auto; padding-right: 6px;">
