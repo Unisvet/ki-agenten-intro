@@ -899,6 +899,8 @@ code {
     height: 100vh;
     position: relative;
     overflow: hidden;
+    background: url('/static/assets/future_workplace.png') no-repeat center center;
+    background-size: cover;
 }
 
 #roadmap-canvas {
@@ -1236,9 +1238,8 @@ code {
 
 .interactive-pillars-wrapper {
     position: relative;
-    background: rgba(255, 255, 255, 0.78) !important; /* Premium light glassmorphism */
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
+    background: url('/static/assets/agent_schematic.png') no-repeat center center !important;
+    background-size: cover !important;
     border: 1px solid var(--color-border) !important;
     box-shadow: var(--shadow-premium) !important;
     display: block;
@@ -1258,7 +1259,7 @@ code {
 
 .connector-path {
     fill: none;
-    stroke: rgba(205, 10, 30, 0.1); /* Light red tint for paths */
+    stroke: rgba(255, 255, 255, 0.2); /* Lighter path color for contrast on dark blueprint image */
     stroke-width: 2.5;
     stroke-linecap: round;
     stroke-dasharray: 6 12;
@@ -1323,6 +1324,7 @@ code {
     align-items: center;
     color: var(--color-text-main);
     gap: 4px;
+    z-index: 5;
 }
 
 .hub-core i {
