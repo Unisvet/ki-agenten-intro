@@ -179,7 +179,8 @@ function buildDrones() {
         new THREE.Vector3(1.2, 2.3, 0.0),
         new THREE.Vector3(4.0, 1.9, -1.0),
         new THREE.Vector3(-2.8, -0.2, 0.5),
-        new THREE.Vector3(2.8, 0.0, 0.5)
+        new THREE.Vector3(2.8, 0.0, 0.5),
+        new THREE.Vector3(0.0, 0.6, 1.5)
     ];
 
     dronePositions.forEach((pos, idx) => {
