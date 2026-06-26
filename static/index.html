@@ -8,7 +8,7 @@
     <!-- Google Fonts: Outfit & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -275,7 +275,8 @@
                     <div>
                         <i class="fa-solid fa-award" style="font-size:4rem; color:var(--color-primary); margin-bottom:15px; display:block;"></i>
                         <h4 style="margin-bottom:8px;">Teilnahme-Zertifikat</h4>
-                        <p style="font-size:0.9rem; color:var(--color-text-muted);">Schließen Sie das Quiz erfolgreich ab, um Ihr Wissen für den Digitaltag 2026 zu festigen.</p>
+                        <p style="font-size:0.9rem; color:var(--color-text-muted); margin-bottom:15px;">Erstellen Sie Ihr persönliches Zertifikat nach dem Seminar oder nach Bestehen des Quizzes.</p>
+                        <button class="btn btn-outline" id="btn-open-cert-modal" style="width: 100%;"><i class="fa-solid fa-signature"></i> Zertifikat erstellen</button>
                     </div>
                 </div>
             </div>
@@ -321,7 +322,8 @@
                     <i class="fa-solid fa-trophy text-highlight" style="font-size: 3.5rem; color:var(--color-primary); margin-bottom: 15px; display:block;"></i>
                     <h4 style="font-size:1.4rem; margin-bottom:8px;">Glückwunsch!</h4>
                     <p id="quiz-result-score" style="font-size: 1.1rem; margin: 10px 0; color:var(--color-text-muted);">Sie haben 0 von 0 Fragen richtig beantwortet.</p>
-                    <button class="btn btn-outline" id="btn-restart-quiz" style="width: 100%; margin-top:15px;">Erneut versuchen</button>
+                    <button class="btn btn-primary" id="btn-quiz-generate-cert" style="width: 100%; margin-top:15px;"><i class="fa-solid fa-award"></i> Zertifikat mit Ergebnis erstellen</button>
+                    <button class="btn btn-outline" id="btn-restart-quiz" style="width: 100%; margin-top:10px;">Erneut versuchen</button>
                 </div>
             </div>
         </div>
@@ -336,6 +338,161 @@
             </div>
             <div class="modal-body" style="padding-top: 10px;">
                 <img src="assets/agent-history.jpg" alt="Evolution der KI-Agenten" style="width: 100%; height: auto; border-radius: var(--border-radius-sm); border: 1px solid var(--color-border); box-shadow: var(--shadow-premium);">
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal Overlay -->
+    <div id="cert-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel" style="max-width: 1050px; width: 95%;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-award text-highlight"></i> Teilnahme-Zertifikat Generator</h3>
+                <button class="btn-close" id="btn-close-cert"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body cert-modal-layout">
+                <!-- Left panel: Controls -->
+                <div class="cert-controls">
+                    <!-- Tab Navigation -->
+                    <div class="cert-tabs">
+                        <button class="cert-tab-btn active" id="btn-tab-single"><i class="fa-solid fa-user"></i> Einzel-Zertifikat</button>
+                        <button class="cert-tab-btn" id="btn-tab-bulk"><i class="fa-solid fa-users"></i> Sammel-Zertifikat</button>
+                    </div>
+
+                    <!-- Single Cert Form -->
+                    <div id="cert-form-single" class="cert-tab-content">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="cert-name" style="display:block; margin-bottom:5px; font-weight:600; font-size:0.9rem;">Vollständiger Name *</label>
+                            <input type="text" id="cert-name" class="form-control" placeholder="Max Mustermann" value="" style="width:100%; padding:10px; border:1px solid var(--color-border); border-radius:var(--border-radius-sm); font-family:var(--font-body);">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="cert-company" style="display:block; margin-bottom:5px; font-weight:600; font-size:0.9rem;">Firma / Organisation (optional)</label>
+                            <input type="text" id="cert-company" class="form-control" placeholder="Muster GmbH" value="" style="width:100%; padding:10px; border:1px solid var(--color-border); border-radius:var(--border-radius-sm); font-family:var(--font-body);">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="cert-date" style="display:block; margin-bottom:5px; font-weight:600; font-size:0.9rem;">Ausstellungsdatum</label>
+                            <input type="text" id="cert-date" class="form-control" value="26. Juni 2026" style="width:100%; padding:10px; border:1px solid var(--color-border); border-radius:var(--border-radius-sm); font-family:var(--font-body);">
+                        </div>
+                        <div class="form-group checkbox-group" id="cert-score-group" style="display:none; margin-bottom: 15px; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="cert-include-score" checked style="width:18px; height:18px; cursor:pointer;">
+                            <label for="cert-include-score" style="cursor:pointer; font-weight:600; font-size:0.9rem;">Testergebnis einblenden (<span id="cert-score-val">0/10</span>)</label>
+                        </div>
+                        <button class="btn btn-primary" id="btn-download-cert" style="width: 100%; margin-top: 15px;">
+                            <i class="fa-solid fa-download"></i> Zertifikat herunterladen (PNG)
+                        </button>
+                    </div>
+
+                    <!-- Bulk Cert Form -->
+                    <div id="cert-form-bulk" class="cert-tab-content hidden">
+                        <p class="help-text" style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:15px; line-height:1.4;">
+                            Laden Sie eine CSV- oder TXT-Datei hoch, die pro Zeile einen Namen enthält (Optional getrennt durch Semikolon mit einer Organisation, z.B. <code>Max Mustermann; Muster GmbH</code>).
+                        </p>
+                        
+                        <div class="ipynb-drop-zone" id="cert-csv-drop-zone" style="margin-bottom:15px; padding: 25px 15px; border: 2px dashed var(--color-border); border-radius: var(--border-radius-sm); text-align: center; cursor: pointer; transition: var(--transition-smooth);">
+                            <i class="fa-solid fa-file-csv upload-icon" style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 10px; display: block;"></i>
+                            <p style="font-size:0.9rem; margin-bottom:5px;">CSV/TXT per Drag & Drop hierher ziehen oder <span class="text-highlight" style="color:var(--color-primary); font-weight:600;">durchsuchen</span></p>
+                            <span style="font-size:0.75rem; color:var(--color-text-dark);">Erlaubte Dateiendungen: .csv, .txt</span>
+                            <input type="file" id="cert-csv-input" accept=".csv,.txt" style="display:none;">
+                        </div>
+
+                        <div id="cert-bulk-preview" class="hidden">
+                            <h4 id="cert-bulk-count" style="margin-bottom:8px; font-size:0.95rem; font-weight:600;">0 Namen geladen</h4>
+                            <div class="cert-bulk-list-container" id="cert-bulk-list" style="max-height: 120px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); padding: 8px; margin-bottom: 15px; font-size: 0.85rem; background:rgba(0,0,0,0.02);">
+                                <!-- Names list injected dynamically -->
+                            </div>
+                            <button class="btn btn-primary" id="btn-download-bulk" style="width: 100%;">
+                                <i class="fa-solid fa-file-arrow-down"></i> Alle Zertifikate herunterladen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right panel: Live Preview -->
+                <div class="cert-preview-container">
+                    <h4 class="preview-title" style="margin-bottom:12px; font-size:0.95rem; font-weight:600; color:var(--color-text-muted);"><i class="fa-solid fa-eye text-highlight"></i> Live-Vorschau</h4>
+                    
+                    <div class="certificate-paper-wrapper" style="width:100%; border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); box-shadow: var(--shadow-premium); background: #ffffff; overflow: hidden; position: relative;">
+                        <div class="certificate-paper" id="cert-paper-element" style="width: 100%; aspect-ratio: 1.414; padding: 5%; box-sizing: border-box; background: radial-gradient(circle, #ffffff 60%, #f7f9fa 100%); color: var(--color-text-main); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                            
+                            <!-- Gold-Blue Ornamental Borders -->
+                            <div class="cert-border-outer" style="position: absolute; top: 12px; bottom: 12px; left: 12px; right: 12px; border: 2px solid #b89742; pointer-events: none;">
+                                <div class="cert-border-inner" style="position: absolute; top: 4px; bottom: 4px; left: 4px; right: 4px; border: 1px solid var(--color-primary); opacity: 0.7;"></div>
+                            </div>
+                            
+                            <!-- Corner Ornaments -->
+                            <div style="position: absolute; top: 12px; left: 12px; width: 24px; height: 24px; border-top: 3px solid #b89742; border-left: 3px solid #b89742;"></div>
+                            <div style="position: absolute; top: 12px; right: 12px; width: 24px; height: 24px; border-top: 3px solid #b89742; border-right: 3px solid #b89742;"></div>
+                            <div style="position: absolute; bottom: 12px; left: 12px; width: 24px; height: 24px; border-bottom: 3px solid #b89742; border-left: 3px solid #b89742;"></div>
+                            <div style="position: absolute; bottom: 12px; right: 12px; width: 24px; height: 24px; border-bottom: 3px solid #b89742; border-right: 3px solid #b89742;"></div>
+
+                            <!-- Header Branding -->
+                            <div class="cert-header" style="display: flex; justify-content: space-between; align-items: center; z-index: 1;">
+                                <span style="font-family: var(--font-headings); font-size: clamp(0.6rem, 1.4vw, 0.95rem); color: var(--color-text-main);">Mittelstand-Digital Zentrum <strong style="color:var(--color-primary);">Spreeland</strong></span>
+                                <span style="font-family: var(--font-headings); font-size: clamp(0.5rem, 1.2vw, 0.8rem); font-weight: 700; color: #b89742; letter-spacing: 1px;">DIGITALTAG 2026</span>
+                            </div>
+
+                            <!-- Main Title Section -->
+                            <div class="cert-title-section" style="text-align: center; margin-top: 2%; z-index: 1;">
+                                <h1 style="font-family: var(--font-headings); font-weight: 800; font-size: clamp(1.2rem, 3.4vw, 2.4rem); color: var(--color-primary); letter-spacing: 2px; margin-bottom: 1.5%; line-height: 1;">TEILNAHME-ZERTIFIKAT</h1>
+                                <p style="font-size: clamp(0.6rem, 1.4vw, 0.9rem); color: var(--color-text-muted); font-style: italic; margin: 0;">Hiermit wird bescheinigt, dass</p>
+                            </div>
+
+                            <!-- Participant Name -->
+                            <div class="cert-participant-section" style="text-align: center; margin: 3% 0; z-index: 1;">
+                                <h2 id="cert-preview-name" style="font-family: var(--font-headings); font-weight: 700; font-size: clamp(1.4rem, 4.2vw, 3rem); color: var(--color-text-main); margin-bottom: 0.5%; line-height: 1.1;">Max Mustermann</h2>
+                                <p id="cert-preview-org" style="font-size: clamp(0.7rem, 1.6vw, 1.1rem); color: #b89742; font-weight: 600; min-height: 1.4em; margin: 0;">Muster GmbH</p>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="cert-description-section" style="text-align: center; padding: 0 5%; z-index: 1;">
+                                <p style="font-size: clamp(0.6rem, 1.3vw, 0.85rem); color: var(--color-text-muted); margin-bottom: 1.5%;">erfolgreich am interaktiven Seminar und Workshop teilgenommen hat:</p>
+                                <h3 style="font-family: var(--font-headings); font-weight: 700; font-size: clamp(0.9rem, 2.4vw, 1.6rem); color: var(--color-primary); margin: 0; line-height: 1.2;">Einblicke in die Welt der KI-Agenten</h3>
+                                <p style="font-size: clamp(0.65rem, 1.5vw, 0.95rem); font-weight: 500; color: var(--color-text-muted); margin: 0.5% 0 0 0;">Vom Sprachmodell (LLM) zum autonomen Problemlöser</p>
+                            </div>
+
+                            <!-- Details Grid -->
+                            <div class="cert-body-grid" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 4%; margin: 3% 0; padding: 0 4%; z-index: 1; text-align: left;">
+                                <div class="cert-topics" style="font-size: clamp(0.5rem, 1.1vw, 0.72rem); color: var(--color-text-muted); border-right: 1px solid rgba(0,0,0,0.08); padding-right: 4%;">
+                                    <strong style="display:block; margin-bottom: 4px; color: var(--color-text-main);">Kernschwerpunkte des Workshops:</strong>
+                                    <ul style="margin: 0; padding-left: 12px; list-style-type: square; line-height: 1.35;">
+                                        <li>Architektur & Evolution von KI-Agenten (Reasoning, Gedächtnis, Tools)</li>
+                                        <li>Souveräner Betrieb lokaler Open-Weights-Modelle (Gemma 4 via Ollama)</li>
+                                        <li>Autonome ReAct-Schleifen & Tool-Schnittstellen (Model Context Protocol)</li>
+                                        <li>Governance, Leitplanken & EU AI Act Relevanz ab August 2026</li>
+                                    </ul>
+                                </div>
+                                <div class="cert-meta-info" style="font-size: clamp(0.5rem, 1.1vw, 0.72rem); color: var(--color-text-muted); display: flex; flex-direction: column; justify-content: center; gap: 6px; padding-left: 2%;">
+                                    <div><strong>Ort:</strong> Cottbus & Live-Online</div>
+                                    <div><strong>Datum:</strong> <span id="cert-preview-date">26. Juni 2026</span></div>
+                                    <div class="cert-score-badge hidden" id="cert-preview-score-box" style="display:inline-flex; align-items:center; gap:5px; background:var(--color-primary-faded); color:var(--color-primary); padding:3px 8px; border-radius:50px; font-weight:700; border:1px solid rgba(205,10,30,0.15); width:fit-content; margin-top:2px;">
+                                        <i class="fa-solid fa-award"></i>
+                                        <span>Wissenstest: <span id="cert-preview-score-val">10/10</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Section -->
+                            <div class="cert-footer" style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 4%; z-index: 1;">
+                                <div style="width: 32%; text-align: center;">
+                                    <div style="font-family: 'Outfit', cursive; font-size: clamp(0.6rem, 1.5vw, 0.95rem); color: var(--color-primary); border-bottom: 1px solid rgba(0,0,0,0.15); padding-bottom: 2px; font-style: italic; min-height: 1.5em; line-height: 1;">Ihr Workshop-Team</div>
+                                    <div style="font-size: clamp(0.45rem, 0.9vw, 0.65rem); color: var(--color-text-dark); margin-top: 4px;">Mittelstand-DigitalZentrum</div>
+                                </div>
+                                
+                                <div class="cert-seal" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: -5px;">
+                                    <div style="width: clamp(35px, 7vw, 55px); height: clamp(35px, 7vw, 55px); border-radius: 50%; background: linear-gradient(135deg, #e6c05a, #b89742); border: 2px double #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffffff;">
+                                        <i class="fa-solid fa-shield-halved" style="font-size: clamp(10px, 2vw, 15px);"></i>
+                                        <span style="font-size: clamp(4px, 0.8vw, 6px); font-weight: 800; letter-spacing: 0.5px; margin-top: 2px;">MDZ</span>
+                                    </div>
+                                </div>
+
+                                <div style="width: 32%; text-align: center;">
+                                    <div style="font-family: 'Outfit', cursive; font-size: clamp(0.6rem, 1.5vw, 0.95rem); color: var(--color-primary); border-bottom: 1px solid rgba(0,0,0,0.15); padding-bottom: 2px; font-style: italic; min-height: 1.5em; line-height: 1;">BTU Cottbus-Senftenberg</div>
+                                    <div style="font-size: clamp(0.45rem, 0.9vw, 0.65rem); color: var(--color-text-dark); margin-top: 4px;">Wissenschaftlicher Partner</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -487,10 +487,476 @@ function showResults() {
     document.getElementById('quiz-feedback-container').classList.add('hidden');
     document.getElementById('quiz-result-container').classList.remove('hidden');
     document.getElementById('quiz-result-score').innerText = `Sie haben ${quizScore} von ${quizQuestions.length} Fragen richtig beantwortet.`;
+
+    // Pre-fill quiz score for certificate generator if they completed it
+    const btnQuizCert = document.getElementById('btn-quiz-generate-cert');
+    if (btnQuizCert) {
+        btnQuizCert.onclick = () => {
+            closeQuiz();
+            openCertificateModal(quizScore);
+        };
+    }
 }
 
 function closeQuiz() {
     document.getElementById('quiz-modal').classList.add('hidden');
+}
+
+// ==========================================================================
+// Certificate Generator Logic
+// ==========================================================================
+
+let certQuizScore = null; 
+let certBulkParticipants = []; 
+
+function openCertificateModal(score = null) {
+    const nameInput = document.getElementById('cert-name');
+    const compInput = document.getElementById('cert-company');
+    const scoreGroup = document.getElementById('cert-score-group');
+    const scoreVal = document.getElementById('cert-score-val');
+    
+    // Reset state
+    certBulkParticipants = [];
+    document.getElementById('cert-bulk-preview').classList.add('hidden');
+    document.getElementById('cert-csv-drop-zone').classList.remove('hidden');
+    
+    if (score !== null) {
+        certQuizScore = score;
+        scoreVal.innerText = `${score} von ${quizQuestions.length}`;
+        scoreGroup.style.display = 'flex';
+        document.getElementById('cert-include-score').checked = true;
+    } else {
+        certQuizScore = null;
+        scoreGroup.style.display = 'none';
+        document.getElementById('cert-include-score').checked = false;
+    }
+
+    if (!nameInput.value) {
+        nameInput.value = "";
+    }
+    
+    updateCertificatePreview();
+    document.getElementById('cert-modal').classList.remove('hidden');
+}
+
+function closeCertificateModal() {
+    document.getElementById('cert-modal').classList.add('hidden');
+}
+
+function switchCertTab(tab) {
+    const tabSingle = document.getElementById('btn-tab-single');
+    const tabBulk = document.getElementById('btn-tab-bulk');
+    const formSingle = document.getElementById('cert-form-single');
+    const formBulk = document.getElementById('cert-form-bulk');
+
+    if (tab === 'single') {
+        tabSingle.classList.add('active');
+        tabBulk.classList.remove('active');
+        formSingle.classList.remove('hidden');
+        formBulk.classList.add('hidden');
+    } else {
+        tabSingle.classList.remove('active');
+        tabBulk.classList.add('active');
+        formSingle.classList.add('hidden');
+        formBulk.classList.remove('hidden');
+    }
+}
+
+function updateCertificatePreview() {
+    const name = document.getElementById('cert-name').value.trim() || "Max Mustermann";
+    const company = document.getElementById('cert-company').value.trim();
+    const date = document.getElementById('cert-date').value.trim() || "26. Juni 2026";
+    const includeScore = document.getElementById('cert-include-score').checked;
+
+    document.getElementById('cert-preview-name').innerText = name;
+    
+    const orgEl = document.getElementById('cert-preview-org');
+    if (company) {
+        orgEl.innerText = company;
+        orgEl.style.visibility = 'visible';
+        orgEl.style.display = 'block';
+    } else {
+        orgEl.innerText = "";
+        orgEl.style.visibility = 'hidden';
+        orgEl.style.display = 'none';
+    }
+
+    document.getElementById('cert-preview-date').innerText = date;
+
+    const scoreBox = document.getElementById('cert-preview-score-box');
+    if (includeScore && certQuizScore !== null) {
+        scoreBox.classList.remove('hidden');
+        document.getElementById('cert-preview-score-val').innerText = `${certQuizScore}/${quizQuestions.length}`;
+    } else {
+        scoreBox.classList.add('hidden');
+    }
+}
+
+function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+    let rot = Math.PI / 2 * 3;
+    let x = cx;
+    let y = cy;
+    let step = Math.PI / spikes;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - outerRadius);
+    for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+    }
+    ctx.lineTo(cx, cy - outerRadius);
+    ctx.closePath();
+    ctx.fill();
+}
+
+function drawCertificateToCanvas(ctx, name, company, date, scoreStr) {
+    // 1. Fill background with radial gradient
+    const grad = ctx.createRadialGradient(1000, 707, 100, 1000, 707, 1200);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(1, '#f7f9fa');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 2000, 1414);
+
+    // 2. Draw Borders
+    // Outer Border (gold #b89742)
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = '#b89742';
+    ctx.strokeRect(24, 24, 1952, 1366);
+
+    // Inner Border (red #CD0A1E)
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(205, 10, 30, 0.7)';
+    ctx.strokeRect(32, 32, 1936, 1350);
+
+    // Corner Ornaments
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = '#b89742';
+    // Top-left
+    ctx.beginPath();
+    ctx.moveTo(24, 72);
+    ctx.lineTo(24, 24);
+    ctx.lineTo(72, 24);
+    ctx.stroke();
+    // Top-right
+    ctx.beginPath();
+    ctx.moveTo(1976, 72);
+    ctx.lineTo(1976, 24);
+    ctx.lineTo(1928, 24);
+    ctx.stroke();
+    // Bottom-left
+    ctx.beginPath();
+    ctx.moveTo(24, 1342);
+    ctx.lineTo(24, 1390);
+    ctx.lineTo(72, 1390);
+    ctx.stroke();
+    // Bottom-right
+    ctx.beginPath();
+    ctx.moveTo(1976, 1342);
+    ctx.lineTo(1976, 1390);
+    ctx.lineTo(1928, 1390);
+    ctx.stroke();
+
+    // 3. Header Branding
+    // Left Branding
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 36px Outfit, Inter, sans-serif';
+    ctx.fillText('Mittelstand-Digital Zentrum ', 100, 100);
+    const widthBrand = ctx.measureText('Mittelstand-Digital Zentrum ').width;
+    ctx.fillStyle = '#CD0A1E';
+    ctx.fillText('Spreeland', 100 + widthBrand, 100);
+
+    // Right Tagline
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#b89742';
+    ctx.font = 'bold 30px Outfit, Inter, sans-serif';
+    ctx.fillText('DIGITALTAG 2026', 1900, 100);
+
+    // 4. Main Title Section
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#CD0A1E';
+    ctx.font = '800 86px Outfit, Inter, sans-serif';
+    ctx.fillText('TEILNAHME-ZERTIFIKAT', 1000, 260);
+
+    ctx.fillStyle = '#334155';
+    ctx.font = 'italic 34px Inter, sans-serif';
+    ctx.fillText('Hiermit wird bescheinigt, dass', 1000, 360);
+
+    // 5. Participant Name
+    ctx.fillStyle = '#0f172a';
+    ctx.font = '700 90px Outfit, Inter, sans-serif';
+    ctx.fillText(name, 1000, 500);
+
+    // Organisation
+    if (company) {
+        ctx.fillStyle = '#b89742';
+        ctx.font = '600 42px Outfit, Inter, sans-serif';
+        ctx.fillText(company, 1000, 585);
+    }
+
+    // 6. Description Section
+    ctx.fillStyle = '#334155';
+    ctx.font = '30px Inter, sans-serif';
+    ctx.fillText('erfolgreich am interaktiven Seminar und Workshop teilgenommen hat:', 1000, 710);
+
+    ctx.fillStyle = '#CD0A1E';
+    ctx.font = '700 50px Outfit, Inter, sans-serif';
+    ctx.fillText('Einblicke in die Welt der KI-Agenten', 1000, 790);
+
+    ctx.fillStyle = '#334155';
+    ctx.font = '500 34px Inter, sans-serif';
+    ctx.fillText('Vom Sprachmodell (LLM) zum autonomen Problemlöser', 1000, 850);
+
+    // 7. Details Grid (Topics on Left, Meta on Right)
+    // Vertical separator
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(1200, 910);
+    ctx.lineTo(1200, 1140);
+    ctx.stroke();
+
+    // Topics list (Left)
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 28px Outfit, Inter, sans-serif';
+    ctx.fillText('Kernschwerpunkte des Workshops:', 200, 930);
+
+    ctx.fillStyle = '#334155';
+    ctx.font = '24px Inter, sans-serif';
+    const topics = [
+        '• Architektur & Evolution von KI-Agenten (Reasoning, Gedächtnis, Tools)',
+        '• Souveräner Betrieb lokaler Open-Weights-Modelle (Gemma 4 via Ollama)',
+        '• Autonome ReAct-Schleifen & Tool-Schnittstellen (Model Context Protocol)',
+        '• Governance, Leitplanken & EU AI Act Relevanz ab August 2026'
+    ];
+    topics.forEach((t, i) => {
+        ctx.fillText(t, 200, 985 + (i * 45));
+    });
+
+    // Meta Info (Right)
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#334155';
+    ctx.font = '26px Inter, sans-serif';
+    ctx.fillText('Ort: Cottbus & Live-Online', 1250, 950);
+    ctx.fillText(`Datum: ${date}`, 1250, 1000);
+
+    // Score Badge
+    if (scoreStr) {
+        const text = `Wissenstest: ${scoreStr}`;
+        ctx.font = 'bold 24px Inter, sans-serif';
+        const textWidth = ctx.measureText(text).width;
+        const badgeW = textWidth + 40;
+        const badgeH = 46;
+        const badgeX = 1250;
+        const badgeY = 1055;
+
+        // Draw pill background
+        ctx.fillStyle = 'rgba(205, 10, 30, 0.08)';
+        ctx.beginPath();
+        if (ctx.roundRect) {
+            ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 23);
+        } else {
+            ctx.rect(badgeX, badgeY, badgeW, badgeH);
+        }
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(205, 10, 30, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Draw score text
+        ctx.fillStyle = '#CD0A1E';
+        ctx.fillText(text, badgeX + 20, badgeY + badgeH / 2 + 8);
+    }
+
+    // 8. Signatures & Seal
+    // Left signature
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#CD0A1E';
+    ctx.font = 'italic 38px "Great Vibes", cursive, sans-serif';
+    ctx.fillText('Ihr Workshop-Team', 450, 1240);
+
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(250, 1265);
+    ctx.lineTo(650, 1265);
+    ctx.stroke();
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '22px Inter, sans-serif';
+    ctx.fillText('Mittelstand-Digital Zentrum', 450, 1295);
+
+    // Right signature
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#CD0A1E';
+    ctx.font = 'italic 38px "Great Vibes", cursive, sans-serif';
+    ctx.fillText('BTU Cottbus-Senftenberg', 1550, 1240);
+
+    ctx.beginPath();
+    ctx.moveTo(1350, 1265);
+    ctx.lineTo(1750, 1265);
+    ctx.stroke();
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '22px Inter, sans-serif';
+    ctx.fillText('Wissenschaftlicher Partner', 1550, 1295);
+
+    // Gold Seal (Center)
+    const sealX = 1000;
+    const sealY = 1250;
+    const sealR = 50;
+
+    const goldGrad = ctx.createLinearGradient(sealX - sealR, sealY - sealR, sealX + sealR, sealY + sealR);
+    goldGrad.addColorStop(0, '#e6c05a');
+    goldGrad.addColorStop(1, '#b89742');
+
+    ctx.fillStyle = goldGrad;
+    ctx.beginPath();
+    ctx.arc(sealX, sealY, sealR, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(sealX, sealY, sealR - 4, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    drawStar(ctx, sealX, sealY - 8, 5, 18, 9);
+
+    ctx.font = 'bold 12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('MDZ', sealX, sealY + 24);
+}
+
+function downloadSingleCertificate() {
+    const name = document.getElementById('cert-name').value.trim() || "Max Mustermann";
+    const company = document.getElementById('cert-company').value.trim();
+    const date = document.getElementById('cert-date').value.trim() || "26. Juni 2026";
+    const includeScore = document.getElementById('cert-include-score').checked;
+    
+    const scoreStr = (includeScore && certQuizScore !== null) ? `${certQuizScore}/${quizQuestions.length}` : null;
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 2000;
+    canvas.height = 1414;
+    const ctx = canvas.getContext('2d');
+    
+    // Ensure fonts are loaded (should be since they are shown on screen)
+    drawCertificateToCanvas(ctx, name, company, date, scoreStr);
+    
+    const filename = `Teilnahme_Zertifikat_${name.replace(/\s+/g, '_')}.png`;
+    const dataUrl = canvas.toDataURL('image/png');
+    
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = dataUrl;
+    link.click();
+}
+
+function handleCSVFile(file) {
+    if (!file.name.endsWith('.csv') && !file.name.endsWith('.txt')) {
+        alert('Bitte laden Sie eine gültige CSV- oder TXT-Datei hoch.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        parseCSVData(text);
+    };
+    reader.readAsText(file);
+}
+
+function parseCSVData(text) {
+    const lines = text.split(/\r?\n/);
+    certBulkParticipants = [];
+
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) return;
+
+        let parts = trimmed.split(';');
+        if (parts.length === 1) {
+            parts = trimmed.split(',');
+        }
+
+        const name = parts[0].trim();
+        const company = parts[1] ? parts[1].trim() : "";
+
+        if (name) {
+            certBulkParticipants.push({ name, company });
+        }
+    });
+
+    renderBulkPreview();
+}
+
+function renderBulkPreview() {
+    const previewContainer = document.getElementById('cert-bulk-preview');
+    const countEl = document.getElementById('cert-bulk-count');
+    const listEl = document.getElementById('cert-bulk-list');
+
+    countEl.innerText = `${certBulkParticipants.length} Teilnehmer geladen`;
+    listEl.innerHTML = '';
+
+    certBulkParticipants.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.style.padding = '4px 0';
+        item.style.borderBottom = '1px solid rgba(0,0,0,0.04)';
+        item.innerHTML = `<strong>${idx + 1}. ${p.name}</strong> ${p.company ? `<span style="color:var(--color-text-dark)">(${p.company})</span>` : ''}`;
+        listEl.appendChild(item);
+    });
+
+    previewContainer.classList.remove('hidden');
+}
+
+async function downloadBulkCertificates() {
+    if (certBulkParticipants.length === 0) return;
+
+    const date = document.getElementById('cert-date').value.trim() || "26. Juni 2026";
+    const btn = document.getElementById('btn-download-bulk');
+    const originalText = btn.innerHTML;
+
+    btn.disabled = true;
+    
+    alert(`Die Generierung von ${certBulkParticipants.length} Zertifikaten wird gestartet. Die Dateien werden nacheinander heruntergeladen. Bitte erlauben Sie Ihrem Browser ggf. den automatischen Download mehrerer Dateien.`);
+
+    for (let i = 0; i < certBulkParticipants.length; i++) {
+        const p = certBulkParticipants[i];
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generiere ${i + 1}/${certBulkParticipants.length}...`;
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = 2000;
+        canvas.height = 1414;
+        const ctx = canvas.getContext('2d');
+
+        drawCertificateToCanvas(ctx, p.name, p.company, date, null);
+
+        const filename = `Teilnahme_Zertifikat_${p.name.replace(/\s+/g, '_')}.png`;
+        const dataUrl = canvas.toDataURL('image/png');
+
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = dataUrl;
+        link.click();
+
+        await sleep(400);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+    alert('Alle Zertifikate wurden erfolgreich generiert.');
 }
 
 // Initialise everything
@@ -532,6 +998,69 @@ window.addEventListener('DOMContentLoaded', () => {
         imageModal.addEventListener('click', (e) => {
             if (e.target === imageModal) {
                 imageModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Certificate bindings
+    const btnOpenCert = document.getElementById('btn-open-cert-modal');
+    if (btnOpenCert) btnOpenCert.addEventListener('click', () => openCertificateModal(null));
+
+    const btnCloseCert = document.getElementById('btn-close-cert');
+    if (btnCloseCert) btnCloseCert.addEventListener('click', closeCertificateModal);
+
+    // Form inputs change listeners
+    const inputCertName = document.getElementById('cert-name');
+    const inputCertCompany = document.getElementById('cert-company');
+    const inputCertDate = document.getElementById('cert-date');
+    const checkCertScore = document.getElementById('cert-include-score');
+
+    if (inputCertName) inputCertName.addEventListener('input', updateCertificatePreview);
+    if (inputCertCompany) inputCertCompany.addEventListener('input', updateCertificatePreview);
+    if (inputCertDate) inputCertDate.addEventListener('input', updateCertificatePreview);
+    if (checkCertScore) checkCertScore.addEventListener('change', updateCertificatePreview);
+
+    // Tab buttons
+    const btnTabSingle = document.getElementById('btn-tab-single');
+    const btnTabBulk = document.getElementById('btn-tab-bulk');
+    if (btnTabSingle) btnTabSingle.addEventListener('click', () => switchCertTab('single'));
+    if (btnTabBulk) btnTabBulk.addEventListener('click', () => switchCertTab('bulk'));
+
+    // Download buttons
+    const btnDownloadCert = document.getElementById('btn-download-cert');
+    if (btnDownloadCert) btnDownloadCert.addEventListener('click', downloadSingleCertificate);
+
+    const btnDownloadBulk = document.getElementById('btn-download-bulk');
+    if (btnDownloadBulk) btnDownloadBulk.addEventListener('click', downloadBulkCertificates);
+
+    // CSV Bulk Uploader drop zone
+    const csvDropZone = document.getElementById('cert-csv-drop-zone');
+    const csvInput = document.getElementById('cert-csv-input');
+
+    if (csvDropZone && csvInput) {
+        csvDropZone.addEventListener('click', () => csvInput.click());
+        
+        csvDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            csvDropZone.classList.add('dragover');
+        });
+
+        csvDropZone.addEventListener('dragleave', () => {
+            csvDropZone.classList.remove('dragover');
+        });
+
+        csvDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            csvDropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleCSVFile(files[0]);
+            }
+        });
+
+        csvInput.addEventListener('change', () => {
+            if (csvInput.files.length > 0) {
+                handleCSVFile(csvInput.files[0]);
             }
         });
     }
