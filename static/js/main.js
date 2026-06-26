@@ -221,6 +221,10 @@ function initNotebookInspector() {
     const clearBtn = document.getElementById('btn-clear-upload');
     const previewContainer = document.getElementById('upload-preview-container');
 
+    if (!dropZone || !fileInput || !clearBtn || !previewContainer) {
+        return; // Element not found on this page (e.g. index.html)
+    }
+
     // Click to select file
     dropZone.addEventListener('click', () => fileInput.click());
 
@@ -491,16 +495,27 @@ function closeQuiz() {
 
 // Initialise everything
 window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btn-start-simulation').addEventListener('click', runSimulation);
-    document.getElementById('btn-back-to-overview').addEventListener('click', showOverview);
+    const btnStartSim = document.getElementById('btn-start-simulation');
+    if (btnStartSim) btnStartSim.addEventListener('click', runSimulation);
+
+    const btnBackOverview = document.getElementById('btn-back-to-overview');
+    if (btnBackOverview) btnBackOverview.addEventListener('click', showOverview);
+
     initNotebookInspector();
     
     // Quiz bindings
     initQuiz();
-    document.getElementById('btn-start-landing-quiz').addEventListener('click', startQuiz);
-    document.getElementById('btn-close-quiz').addEventListener('click', closeQuiz);
-    document.getElementById('btn-next-quiz').addEventListener('click', nextQuestion);
-    document.getElementById('btn-restart-quiz').addEventListener('click', startQuiz);
+    const btnStartQuiz = document.getElementById('btn-start-landing-quiz');
+    if (btnStartQuiz) btnStartQuiz.addEventListener('click', startQuiz);
+
+    const btnCloseQuiz = document.getElementById('btn-close-quiz');
+    if (btnCloseQuiz) btnCloseQuiz.addEventListener('click', closeQuiz);
+
+    const btnNextQuiz = document.getElementById('btn-next-quiz');
+    if (btnNextQuiz) btnNextQuiz.addEventListener('click', nextQuestion);
+
+    const btnRestartQuiz = document.getElementById('btn-restart-quiz');
+    if (btnRestartQuiz) btnRestartQuiz.addEventListener('click', startQuiz);
 
     // Image Lightbox bindings
     const imageModal = document.getElementById('image-modal');
